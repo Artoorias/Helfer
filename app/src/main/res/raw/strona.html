@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+
+<style media="screen" type="text/css">
+@import url("https://fonts.googleapis.com/css?family=Montserrat");
+*,
+::after,
+::before {
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+  -moz-box-pack: space-evenly;
+  -o-box-pack: space-evenly;
+  -ms-flex-pack: space-evenly;
+  -webkit-justify-content: space-evenly;
+  justify-content: space-evenly;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  font-family: Montserrat;
+}
+.screen {
+  width: 270px;
+  height: 480px;
+  border: solid 1px #000;
+  border-radius: 25px;
+  overflow: hidden;
+  position: relative;
+}
+.main {
+  width: 100%;
+  height: 100%;
+}
+.header {
+  width: 100%;
+  height: 25%;
+  background: #0af;
+}
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background-image: url("http://www.burgerparlor.com/img/nav/nav-bp-logo.png");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  position: absolute;
+  top: 5px;
+  left: 85px;
+}
+.content-circles {
+  width: 100%;
+  height: calc(75% + 10px);
+  border-radius: 10px;
+  background: #fff;
+  top: calc(25% - 10px);
+  position: absolute;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+  -moz-box-pack: space-evenly;
+  -o-box-pack: space-evenly;
+  -ms-flex-pack: space-evenly;
+  -webkit-justify-content: space-evenly;
+  justify-content: space-evenly;
+}
+.content-text {
+  width: 100%;
+  height: calc(75% + 10px);
+  border-radius: 10px;
+  background: #fff;
+  top: calc(25% - 10px);
+  position: absolute;
+}
+.content-user-profile {
+  width: 100%;
+  height: calc(75% + 10px);
+  border-radius: 10px;
+  background: #fff;
+  top: calc(25% - 10px);
+  position: absolute;
+}
+.half {
+  width: 100px;
+  height: 100%;
+}
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #0af;
+  color: #fff;
+  font-size: 50px;
+  margin: calc(70px / 4) 0;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+.circle:active {
+  background: #0077c7;
+}
+.question {
+  width: 100%;
+  height: 130px;
+  font-size: 23px;
+  color: #555;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  margin-bottom: 120px;
+}
+.answer {
+  width: 100%;
+  height: 50px;
+  font-size: 17px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  padding: 0 25px;
+}
+.answer:active {
+  background: rgba(0,170,255,0.1);
+}
+.user-icon {
+  width: 125px;
+  height: 125px;
+  border-radius: 50%;
+  background-image: url("https://scontent-frx5-1.xx.fbcdn.net/v/t1.0-1/c0.0.160.160/p160x160/23319181_483674515353061_212033291700357852_n.jpg?oh=8ba2ace35557e403349e5fea42b3a0ed&oe=5ABA36FE");
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  margin: 10px auto;
+}
+.user-info {
+  width: 100%;
+  height: 225px;
+}
+.info-content {
+  width: 100%;
+  height: 40px;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-pack: center;
+  -moz-box-pack: center;
+  -o-box-pack: center;
+  -ms-flex-pack: center;
+  -webkit-justify-content: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -moz-box-align: center;
+  -o-box-align: center;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+</style>
+  <body>
+    <div class="screen">
+      <div class="main">
+        <div class="header">
+          <div class="logo"></div>
+        </div>
+        <div class="content-user-profile">
+          <div class="user-icon"></div>
+          <div class="user-info">
+            <div class="info-content">Age: 16</div>
+            <div class="info-content">Gender: Male</div>
+            <div class="info-content">Height: 1.87m</div>
+            <div class="info-content">Weight: 85kg</div>
+            <div class="info-content">BMI: 24</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="main">
+        <div class="header">
+          <div class="logo"></div>
+        </div>
+        <div class="content-circles">
+          <div class="half">
+            <div class="circle">&#9888</div>
+            <div class="circle">&#10015</div>
+            <div class="circle">&#10084</div>
+          </div>
+          <div class="half">
+            <div class="circle">&#10086</div>
+            <div class="circle">&#10048</div>
+            <div class="circle">&#10052</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="screen">
+      <div class="main">
+        <div class="header">
+          <div class="logo"></div>
+        </div>
+        <div class="content-text">
+          <div class="question">What is your gender?</div>
+          <div class="answer">&#9900 Male</div>
+          <div class="answer">&#9900 Female</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

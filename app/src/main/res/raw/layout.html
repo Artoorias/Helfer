@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <script src="https://cdn.rawgit.com/wvffle/waff-query/7fcbc5b9/dist/waff-query.js"></script>
+    <script src="https://unpkg.com/vue"></script>
+    <script src="https://unpkg.com/paper-ripple"></script>
+    <script src="https://unpkg.com/vue-router"></script>
+    <script src="https://unpkg.com/emojione@2.2.7"></script>
+    <link href="https://unpkg.com/paper-ripple@0.3.0/dist/paper-ripple.min.css" rel="stylesheet">
+    <link href="layoutc.css" rel="stylesheet">
+    <link href="https://wvffle.net/FlashFresh/index/styles/reset.css">
+  </head>
+  <body>
+    <div id="app">
+      <transition name="tname">
+        <router-view :questions="questions" :sections="sections"></router-view>
+      </transition>
+    </div>
+    <template id="root-template">
+      <div class="root">
+        <div class="button-wrapper" v-for="section in sections">
+          <router-link class="button" :to="section.button.link">
+            <icon :emoji="section.button.icon"></icon>
+            <div class="content">{{ section.button.content }}</div>
+          </router-link>
+        </div>
+      </div>
+    </template>
+    <template id="survey-template">
+      <div class="survey">
+        <header>
+          <icon :emoji="questions[idx].icon"></icon>
+          <svg viewBox="0 0 500 100">
+            <path d="M0 50 Q125 0, 250 50, 375 100, 500 50 L500 100 L0 100 L0 50z" fill="#fff"></path>
+          </svg>
+        </header>
+        <div class="content">
+          <div class="question">Question No. {{ questions[idx].prefix }}<span>{{ questions[idx].question }}</span></div>
+          <div class="answers">
+            <div class="iterator" v-for="(answer, i) in questions[idx].answers">
+              <answer v-if="typeof answer === `string`" :answer="answer" :idx="idx" :next="getNext()"></answer>
+              <input v-if="answer.type === `input`" :placeholder="answer.placeholder" type="text" v-model="answer.value" required>
+              <div class="checkbox" v-if="answer.type === `checkbox`">
+                <input :id="`checkbox-` + idx + `-` + i" type="checkbox" v-model="answer.checked">
+                <label :for="`checkbox-` + idx + `-` + i"><span></span>{{ answer.value }}</label>
+              </div>
+              <answer v-if="answer.type === `submit`" answer="Next" :idx="idx" :answers="questions[idx].answers" :next="getNext()"></answer>
+            </div>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template id="button-template">
+      <div class="paper-button">{{ title }}</div>
+    </template>
+    <template id="answer-template">
+      <paper-button class="answer" :title="answer"></paper-button>
+    </template>
+    <script src="layouts.js"></script>
+  </body>
+</html>
