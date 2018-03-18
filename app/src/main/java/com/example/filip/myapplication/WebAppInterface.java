@@ -27,7 +27,7 @@ class WebAppInterface {
         sql = sqla;
     }
 
-    private  static String cursorToString(Cursor crs) {
+    private static String cursorToString(Cursor crs) {
         JSONArray arr = new JSONArray();
         crs.moveToFirst();
         while (!crs.isAfterLast()) {
@@ -71,45 +71,126 @@ class WebAppInterface {
      * Get information from
      *
      * @param req value of request
-     *            req = 1 get_dish_name
-     *            req = 2 get_target_of_sport
-     *            req = 3 get_all_dish
-     *            req = 4 get_all_sport
+     *            req = 1 get_all_dish
+     *            req = 2 get_all_sport
+     *            req = 3 get_all_artykoly (tak niewiem jak jest po angielsku)
+     *            req = 4 get_all_maps_position
+     *            req = 5 get_all_slogans
+     *            req = 6 get_default_filtred_dish
+     *            req = 7 get_default_filtred_artykoly
+     *            req = 8 get_default_filtred_sport
+     *            req = 9 get_custom_filtred_dish option_1=Przeciwskazania option_2=Wegetarianizm option_3=Weganizm
+     *            req = 10 get_custom_filtred_artukoly option_1=Grupa Wiekowa
+     *            req = 11 get_custom_filtred_sport option_1=Przeciwskazania
      * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
      */
     @JavascriptInterface
     public static String get_Data(@NonNull int req) {
-        if (config.debug==true) {
-            Log.d("get_Data","Rozpoczynam");
+        if (config.debug == true) {
+            Log.d("get_Data", "Rozpoczynam");
         }
         Cursor c = null;
         try {
-            if (config.debug==true) {
-                Log.d("get_Data","req = "+req);
+            if (config.debug == true) {
+                Log.d("get_Data", "req = " + req);
             }
             switch (req) {
                 case 1:
-                    c = sql.rawQuery("SELECT Dish from Przepisy_do_aplikacji_Erasmus;", null);
+                    c = sql.rawQuery("SELECT * from zywienie;", null);
                     break;
                 case 2:
-                    c = sql.rawQuery("SELECT cel from Sport;", null);
+                    c = sql.rawQuery("SELECT * from sport;", null);
                     break;
                 case 3:
-                    c = sql.rawQuery("SELECT * from Przepisy_do_aplikacji_Erasmus;", null);
+                    c = sql.rawQuery("SELECT * from artykoly;", null);
                     break;
                 case 4:
-                    c = sql.rawQuery("SELECT * from Sport;", null);
+                    c = sql.rawQuery("SELECT * from gra_terenowa;", null);
                     break;
+                case 5:
+                    c = sql.rawQuery("SELECT * from slogan;", null);
+                    break;
+                case 6:
+                    c = sql.rawQuery("SELECT * from gra_terenowa;", null);
+                    break;
+                default:
+                    return "{ success: false, error: 'unknown request' }";
             }
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            if (config.debug==true) {
-                Log.e("get_Data",e.getMessage());
+            if (config.debug) {
+                Log.e("get_Data", e.getMessage());
             }
-            return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
+            return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
-            if (config.debug==true) {
-                Log.d("get_Data",cursorToString(c));
+            if (config.debug) {
+                Log.d("get_Data", cursorToString(c));
+            }
+            return "{ success: true, data: " + cursorToString(c) + "}";
+        }
+    }
+
+    @JavascriptInterface
+    public static String get_Data(@NonNull int req, @NonNull String option_1) {
+        if (config.debug == true) {
+            Log.d("get_Data", "Rozpoczynam");
+        }
+        Cursor c = null;
+        try {
+            if (config.debug == true) {
+                Log.d("get_Data", "req = " + req + " option1 = " + option_1);
+            }
+            switch (req) {
+                case 10:
+                    c = sql.rawQuery("SELECT * from artykoly where grupa_wiekowa = ?;", new String[]{option_1});
+                    break;
+                case 11:
+                    c = sql.rawQuery("SELECT * from sport; where przeciwskazania = ?", new String[]{option_1});
+                    break;
+                default:
+                    return "{ success: false, error: 'unknown request' }";
+            }
+        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        {
+            if (config.debug == true) {
+                Log.e("get_Data", e.getMessage());
+            }
+            return "{ success: false, error: '" + e.getMessage() + "' }";
+        } finally {
+            if (config.debug == true) {
+                Log.d("get_Data", cursorToString(c));
+            }
+            return "{ success: true, data: " + cursorToString(c) + "}";
+        }
+    }
+
+    @JavascriptInterface
+    public static String get_Data(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3) {
+        if (config.debug == true) {
+            Log.d("get_Data", "Rozpoczynam");
+        }
+        Cursor c = null;
+        try {
+
+            if (config.debug == true) {
+                Log.d("get_Data", "req = " + req + " option1 = " + option_1);
+            }
+            switch (req) {
+                case 9:
+                    c = sql.rawQuery("SELECT * from zywienie where przeciwskazania = ? and wegetarianizm = ? and weganizm = ?;", new String[]{option_1, option_2, option_3});
+                    break;
+                default:
+                    return "{ success: false, error: 'unknown request' }";
+            }
+        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        {
+            if (config.debug == true) {
+                Log.e("get_Data", e.getMessage());
+            }
+            return "{ success: false, error: '" + e.getMessage() + "' }";
+        } finally {
+            if (config.debug == true) {
+                Log.d("get_Data", cursorToString(c));
             }
             return "{ success: true, data: " + cursorToString(c) + "}";
         }
@@ -123,21 +204,21 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String write_survey_data(@NonNull String key,@NonNull String value) {
-        if (config.debug==true) {
-            Log.d("write_survey_data","Rozpoczynam, key: "+key+" value: "+value);
+    public static String write_Survey_Data(@NonNull String key, @NonNull String value) {
+        if (config.debug == true) {
+            Log.d("write_Survey_Data", "Rozpoczynam, key: " + key + " value: " + value);
         }
         try {
             sql.execSQL("INSERT INTO _Ankieta (" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + "," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + ") VALUES (?,?);", new String[]{key, value});
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            if (config.debug==true) {
-                Log.e("write_survey_data","błąd: "+e.getMessage());
+            if (config.debug == true) {
+                Log.e("write_Survey_Data", "błąd: " + e.getMessage());
             }
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
-            if (config.debug==true) {
-                Log.d("write_survey_data","ok");
+            if (config.debug == true) {
+                Log.d("write_Survey_Data", "ok");
             }
             return "{ success: true}";
         }
@@ -153,24 +234,25 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String update_Survey_Data(@NonNull Integer id, @NonNull String key, @NonNull String value) {
-        if (config.debug==true) {
-            Log.d("update_Survey_Data","Rozpoczynam id = "+id+" key = "+key+" value = "+value);
+        if (config.debug == true) {
+            Log.d("update_Survey_Data", "Rozpoczynam id = " + id + " key = " + key + " value = " + value);
         }
         try {
             sql.execSQL("UPDATE _Ankieta SET" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + " = ? ," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + " = ? WHERE id = " + id.toString() + ";", new String[]{key, value});
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            if (config.debug==true) {
-                Log.d("update_Survey_Data", "Błąd "+e.getMessage());
+            if (config.debug == true) {
+                Log.d("update_Survey_Data", "Błąd " + e.getMessage());
             }
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
-            if (config.debug==true) {
+            if (config.debug == true) {
                 Log.d("update_Survey_Data", "OK");
             }
             return "{ success: true}";
         }
     }
+
     /**
      * Get row form table _Ankieta by id
      *
@@ -179,25 +261,26 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String get_Survey_Info_By_Id(@NonNull Integer id) {
-        if (config.debug==true) {
-            Log.d("get_Survey_Info_By_Id", "Rozpoczynam id = "+id);
+        if (config.debug == true) {
+            Log.d("get_Survey_Info_By_Id", "Rozpoczynam id = " + id);
         }
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _Ankieta where id = " + id.toString() + ";", null);
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            if (config.debug==true) {
-                Log.e("get_Survey_Info_By_Id", "błąd: "+e.getMessage());
+            if (config.debug == true) {
+                Log.e("get_Survey_Info_By_Id", "błąd: " + e.getMessage());
             }
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
         } finally {
-            if (config.debug==true) {
+            if (config.debug == true) {
                 Log.d("get_Survey_Info_By_Id", "OK");
             }
             return "{ success: true, data: " + cursorToString(c) + "}";
         }
     }
+
     /**
      * Get all rows form table _Ankieta by id
      *
@@ -205,7 +288,7 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String get_Survey_Info_All() {
-        if (config.debug==true) {
+        if (config.debug == true) {
             Log.d("get_Survey_Info_All", "Zaczynam");
         }
         Cursor c = null;
@@ -213,12 +296,12 @@ class WebAppInterface {
             c = sql.rawQuery("SELECT * from _Ankieta;", null);
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            if (config.debug==true) {
-                Log.e("get_Survey_Info_All", "błąd: "+e.getMessage());
+            if (config.debug == true) {
+                Log.e("get_Survey_Info_All", "błąd: " + e.getMessage());
             }
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
         } finally {
-            if (config.debug==true) {
+            if (config.debug == true) {
                 Log.d("get_Survey_Info_All", "OK");
             }
             return "{ success: true, data: " + cursorToString(c) + "}";
@@ -232,22 +315,136 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String wyczysc() {
-        if (config.debug==true) {
+        if (config.debug == true) {
             Log.d("wyczysc", "Rozpoczynam");
         }
         try {
             sql.execSQL("VACUUM;", null);
         } catch (Exception e) {
-            if (config.debug==true) {
-                Log.e("wyczysc", "Błąd: "+e.getMessage());
+            if (config.debug == true) {
+                Log.e("wyczysc", "Błąd: " + e.getMessage());
             }
             return "{ success: false, error: '" + e.getMessage() + "'}";
         } finally {
-            if (config.debug==true) {
+            if (config.debug == true) {
                 Log.d("wyczysc", "OK");
             }
             return "{ success: true}";
         }
     }
 
+    /**
+     * Get all Profile data
+     *
+     * @return String Json operation status (witch error)
+     */
+    @JavascriptInterface
+    public static String profile_Get_Data() {
+        if (config.debug == true) {
+            Log.d("profile_Get_Data", "Zaczynam");
+        }
+        Cursor c = null;
+        try {
+            c = sql.rawQuery("SELECT * from _profile;", null);
+        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        {
+            if (config.debug == true) {
+                Log.e("profile_Get_Data", "błąd: " + e.getMessage());
+            }
+            return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
+        } finally {
+            if (config.debug == true) {
+                Log.d("profile_Get_Data", "OK");
+            }
+            return "{ success: true, data: " + cursorToString(c) + "}";
+        }
+    }
+
+    /**
+     * get lastest profile data
+     *
+     * @return String Json operation status (witch error)
+     */
+    @JavascriptInterface
+    public static String profile_Get_Lastest_Data() {
+        if (config.debug == true) {
+            Log.d("profile_Get_Lastest_Da", "Zaczynam");
+        }
+        Cursor c = null;
+        try {
+            c = sql.rawQuery("SELECT * from _profile where data=?;", new String[]{"-1"});
+        } catch (Exception e)
+        {
+            if (config.debug == true) {
+                Log.e("profile_Get_Lastest_Da", "błąd: " + e.getMessage());
+            }
+            return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
+        } finally {
+            if (config.debug == true) {
+                Log.d("profile_Get_Lastest_Da", "OK");
+            }
+            return "{ success: true, data: " + cursorToString(c) + "}";
+        }
+    }
+    /**
+     * update lastest profile data
+     *
+     * @param first_name String
+     * @param first_name waga
+     * @param first_name wzrost
+     * @param first_name drunked_water
+     *
+     * @return String Json operation status (witch error)
+     */
+    @JavascriptInterface
+    public static String profile_lastest_update(@NonNull String first_name,@NonNull String Waga,@NonNull String Wzrost, @NonNull String drunked_water) {
+        if (config.debug == true) {
+            Log.d("profile_lastest_update", "Zaczynam");
+        }
+        if (config.debug == true) {
+            Log.d("profile_lastest_update", "first_name = "+first_name+" Waga = "+Waga+" Wzrost = " + Wzrost + "wypita woda = "+drunked_water);
+        }
+        Cursor c = null;
+        try {
+            sql.execSQL("Update _profil SET first_name = ?, waga = ?, wzrost = ?,drunked_water = ? where data=?;", new String[]{first_name,Waga,Wzrost,drunked_water,"-1"});
+        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        {
+            if (config.debug == true) {
+                Log.e("write_survey_data", "błąd: " + e.getMessage());
+            }
+            return "{ success: false, error:'" + e.getMessage() + "'}";
+        } finally {
+            if (config.debug == true) {
+                Log.d("write_survey_data", "ok");
+            }
+            return "{ success: true}";
+        }
+    }
+    /**
+     * create snapschot form lastest profile state
+     *
+     * @return String Json operation status (witch error)
+     */
+    @JavascriptInterface
+    public static String create_new_snapschot() {
+        if (config.debug == true) {
+            Log.d("create_new_snapschot", "Zaczynam");
+        }
+        Cursor c = null;
+        try {
+            sql.execSQL("insert into _profil (first_name,waga,wzrost,drunked_water,data) select first_name,waga,wzrost,drunked_water,date() from _profil where data = \"-1\";", null);
+        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        {
+            if (config.debug == true) {
+                Log.e("create_new_snapschot", "błąd: " + e.getMessage());
+            }
+            return "{ success: false, error:'" + e.getMessage() + "'}";
+        } finally {
+            if (config.debug == true) {
+                Log.d("create_new_snapschot", "ok");
+            }
+            return "{ success: true}";
+        }
+
+    }
 }

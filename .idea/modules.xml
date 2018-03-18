@@ -3,7 +3,8 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/helfer.iml" filepath="$PROJECT_DIR$/.idea/helfer.iml" />
+      <module fileurl="file://$PROJECT_DIR$/helfer.iml" filepath="$PROJECT_DIR$/helfer.iml" />
+      <module fileurl="file://C:\Users\Tomek\floobits\share\Erasmus-Plus\helfer\.idea\helfer.iml" filepath="C:\Users\Tomek\floobits\share\Erasmus-Plus\helfer\.idea\helfer.iml" />
     </modules>
   </component>
 </project>
