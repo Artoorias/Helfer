@@ -1,11 +1,18 @@
 package com.example.filip.myapplication;
 
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
@@ -26,6 +33,8 @@ public class MainActivity extends AppCompatActivity {
     SQLiteDatabase sql = null;
     private SharedPreferences sharedPref ;
     private SharedPreferences.Editor editor;
+    private AlarmManager alarmMgr;
+    private PendingIntent alarmIntent;
     private final static String PREFERENCES_NAME="conf";
     private final static String APK_VERSION_KEY="APK_VERSION";
     private final static String DB_VERSION_KEY="DB_VERSION";
@@ -70,6 +79,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        alarmMgr = (AlarmManager)getSystemService(ALARM_SERVICE);
+        Intent it = new Intent(getApplicationContext(), AlarmReceiver.class);
+        alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 123123123, it, 0);
+        int i = 60;
+        alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, System.currentTimeMillis()
+                + (i * 1000), (i * 1000), alarmIntent);
         try {
             pinfo = getPackageManager().getPackageInfo(getPackageName(), 0);
         }catch (PackageManager.NameNotFoundException e){
@@ -100,6 +115,9 @@ public class MainActivity extends AppCompatActivity {
                 while ((read = in.read(buff)) > 0) {
                     out.write(buff, 0, read);
                 }
+                out.flush();
+                out.close();
+                in.close();
             }else
             {
                 if (config.debug==true) {
@@ -172,6 +190,17 @@ public class MainActivity extends AppCompatActivity {
                 if (config.debug==true) {
                     Log.d("Create", "versja bazy danych nie istnieje (pierwsze uruchomienie)");
                 }
+                NotificationManager notificationManager =
+                        (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    CharSequence name = "woda";
+                    String description = "powiadomienia o picu wody";
+                    NotificationChannel channel = new NotificationChannel("woda", name, NotificationManager.IMPORTANCE_HIGH);
+                    channel.setDescription(description);
+                    channel.setLightColor(Color.BLUE);
+                    channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                    notificationManager.createNotificationChannel(channel);
+                }
                 editor.putString(DB_VERSION_KEY,versja);
             }else{
                 if (config.debug==true) {
@@ -184,11 +213,15 @@ public class MainActivity extends AppCompatActivity {
             }
             try {
                 out = new FileOutputStream(DATABASE_PATH + DATABASE_NAME+".bak");
+                in = getResources().openRawResource(R.raw.baza);
                 byte[] buff = new byte[1024];
                 int read = 0;
                 while ((read = in.read(buff)) > 0) {
                     out.write(buff, 0, read);
                 }
+                    out.flush();
+                    out.close();
+                in.close();
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
             }catch (IOException e){
@@ -213,15 +246,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("Create", "usuwanie tymczasowej bazy danych)");
             }
             new File(DATABASE_PATH + DATABASE_NAME+".bak").delete();
-            try {
-                if (out != null) {
-                    out.flush();
-                    out.close();
-                }
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+
+
         }
         if (config.debug==true) {
                 Cursor tmp = sql.rawQuery("Select wartosc from _conf;",null);
