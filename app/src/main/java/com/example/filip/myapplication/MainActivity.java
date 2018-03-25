@@ -26,6 +26,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.provider.Settings;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -33,6 +34,7 @@ import android.util.Log;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -58,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
     Runnable run = new Runnable() {
         @Override
         public void run() {
-            try {
+                        try {
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 dialog.setMessage("Inicjalizacja...");
                 dialog.setIndeterminate(true);
@@ -70,11 +72,11 @@ public class MainActivity extends AppCompatActivity {
                         dialog.show();
                     }
                 });
-                try {
+               /* try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
                /* alarmMgr = (AlarmManager) getSystemService(ALARM_SERVICE);
                 Intent it = new Intent(getApplicationContext(), AlarmReceiver.class);
                 alarmIntent = PendingIntent.getBroadcast(getApplicationContext(), 123123123, it, 0);
@@ -115,11 +117,11 @@ public class MainActivity extends AppCompatActivity {
                         dialog.setMessage("Powiadomienia...");
                     }
                 });
-                try {
+               /* try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
 
                 findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -174,15 +176,14 @@ public class MainActivity extends AppCompatActivity {
                         dialog.setMessage("Inicjalizacja wyglądu...");
                     }
                 });
-                try {
+               /* try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
-                }
+                }*/
                 mhandler.post(new Runnable() {
                     @Override
                     public void run() {
-
                         WebView web = (WebView) findViewById(R.id.strona);
                         web.getSettings().setJavaScriptEnabled(true);
                         web.getSettings().setAllowFileAccess(true);
@@ -300,7 +301,7 @@ public class MainActivity extends AppCompatActivity {
                         dialog.setMessage("weryfikacja bazy danych");
                     }
                 });
-                Thread.sleep(1000);
+                //Thread.sleep(1000);
                 if (config.debug == true) {
                     Log.d("check_db_updates", "Sprawdzam co z bazą");
                 }
@@ -330,10 +331,10 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 em = "Problemy z kopiowaniem bazy";
                 throw e;
-            } catch (InterruptedException e) {
+            } /*catch (InterruptedException e) {
                 e.printStackTrace();
                 throw e;
-            }
+            }*/
                 if (config.debug == true) {
                     Log.d("check_db_updates", "Sprawdzam czy baza działa");
                 }
@@ -415,55 +416,61 @@ public class MainActivity extends AppCompatActivity {
                 } else {
                     if (config.debug == true) {
                         Log.d("check_db_updates", "versja bazy danych: " + versja + " wersja z shared " + sharedPref.getString(DB_VERSION_KEY, ""));
+                        Log.d("check_db_updates", "otwieram baze danych z resoiurces");
                     }
+                    try {
+                        out = new FileOutputStream(DATABASE_PATH + DATABASE_NAME + ".bak");
+                        in = getResources().openRawResource(R.raw.baza);
+                        byte[] buff = new byte[1024];
+                        int read = 0;
+                        while ((read = in.read(buff)) > 0) {
+                            out.write(buff, 0, read);
+                        }
+                        out.flush();
+                        out.close();
+                        in.close();
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        em = "Plik nie znaleziony";
+                        throw e;
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        throw e;
+                    }
+                    SQLiteDatabase sqtmp = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME + ".bak", null, SQLiteDatabase.OPEN_READWRITE);
+                    db_ver = sqtmp.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";", null);
+                    db_ver.moveToFirst();
+                    String wer = db_ver.getString(0);
+                    if (!wer.equals(versja)) {
+                        if (config.debug == true) {
+                            Log.d("check_db_updates", "versja bazy danych nie jest aktualne (był update)");
+                        }
+                        sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + wer + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";");
+                        editor.putString(DB_VERSION_KEY, wer);
+                    } else {
+                        if (config.debug == true) {
+                            Log.d("check_db_updates", "versja bazy danych jest aktualna");
+                        }
+                    }
+                    if (config.debug == true) {
+                        Log.d("check_db_updates", "usuwanie tymczasowej bazy danych)");
+                    }
+                    new File(DATABASE_PATH + DATABASE_NAME + ".bak").delete();
                 }
                 if (config.debug == true) {
                     Log.d("check_db_updates", "aktualnie zainstalowana wersja db " + versja);
-                    Log.d("check_db_updates", "otwieram baze danych z resoiurces");
                 }
-                try {
-                    out = new FileOutputStream(DATABASE_PATH + DATABASE_NAME + ".bak");
-                    in = getResources().openRawResource(R.raw.baza);
-                    byte[] buff = new byte[1024];
-                    int read = 0;
-                    while ((read = in.read(buff)) > 0) {
-                        out.write(buff, 0, read);
-                    }
-                    out.flush();
-                    out.close();
-                    in.close();
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
-                    em = "Plik nie znaleziony";
-                    throw e;
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw e;
-                }
-                SQLiteDatabase sqtmp = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME + ".bak", null, SQLiteDatabase.OPEN_READWRITE);
-                db_ver = sqtmp.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";", null);
-                db_ver.moveToFirst();
-                String wer = db_ver.getString(0);
-                if (!wer.equals(versja)) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja bazy danych nie jest aktualne (był update)");
-                    }
-                    sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + wer + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";");
-                    editor.putString(DB_VERSION_KEY, wer);
-                } else {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja bazy danych jest aktualna");
-                    }
-                }
-                if (config.debug == true) {
-                    Log.d("check_db_updates", "usuwanie tymczasowej bazy danych)");
-                }
-                new File(DATABASE_PATH + DATABASE_NAME + ".bak").delete();
+
 
             if (config.debug == true) {
-                Cursor tmp = sql.rawQuery("Select wartosc from _conf;", null);
+                final Cursor tmp = sql.rawQuery("Select wartosc from _conf;", null);
                 tmp.moveToFirst();
-                // Toast.makeText(MainActivity.this,"Witam w wersji DEBUG, ta wersja nie jest przezbaczona do urzytku pordukcyjnego, wersj: "+ pinfo.versionName+" wersja bazy danych to: "+tmp.getString(0)+" miłego debugu", Toast.LENGTH_LONG).show();
+                mhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(MainActivity.this,"Witam w wersji DEBUG, ta wersja nie jest przezbaczona do urzytku pordukcyjnego, wersj: "+ pinfo.versionName+" wersja bazy danych to: "+tmp.getString(0)+" miłego debugu", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
             Cursor c = null;
             if (config.debug == true) {
