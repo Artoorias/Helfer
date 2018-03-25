@@ -45,6 +45,11 @@ import java.io.OutputStream;
 import java.io.Serializable;
 
 public class MainActivity extends AppCompatActivity {
+    static void show_debug_message(String tag, String msg){
+        if (config.debug == true) {
+            Log.d(tag, msg);
+        }
+    }
     private final static String PREFERENCES_NAME = "conf";
     private final static String APK_VERSION_KEY = "APK_VERSION";
     private final static String DB_VERSION_KEY = "DB_VERSION";
@@ -61,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
         @Override
         public void run() {
                         try {
+                            show_debug_message("Thread", "Rozpoczynam");
                 dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
                 dialog.setMessage("Inicjalizacja...");
                 dialog.setIndeterminate(true);
@@ -95,6 +101,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                     return;
                 }
+                            show_debug_message("Thread", "check_db");
 
                 try {
                     check_db_updates();
@@ -107,10 +114,7 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                     return;
                 }
-
-                if (config.debug == true) {
-                    Log.d("Create", "Koniec");
-                }
+                            show_debug_message("Thread", "check_db_end");
                 mhandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -122,7 +126,6 @@ public class MainActivity extends AppCompatActivity {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }*/
-
                 findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
@@ -157,7 +160,6 @@ public class MainActivity extends AppCompatActivity {
                                             .setTicker("HELFER")
                                             .setWhen(0)
                                             .setAutoCancel(true);
-                            ;
                             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                             mBuilder.setSound(alarmSound);
                             mBuilder.setLights(Color.BLUE, 500, 500);
@@ -165,11 +167,11 @@ public class MainActivity extends AppCompatActivity {
                             mBuilder.setVibrate(pattern);
                             NotificationManager notificationManager =
                                     (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
                             notificationManager.notify(0, mBuilder.build());
                         }
                     }
                 });
+                            show_debug_message("Thread", "inicjalizacja wyglądu");
                 mhandler.post(new Runnable() {
                     @Override
                     public void run() {
@@ -211,6 +213,7 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 return;
             }
+            show_debug_message("Thread", "Koniec");
         }
     };
     private AlarmManager alarmMgr;
@@ -286,9 +289,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             sharedPref = getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
             editor = sharedPref.edit();
-            if (config.debug == true) {
-                Log.d("check_db_updates", "Rozpoczynam");
-            }
+            show_debug_message("check_db_updates", "Rozpoczynam");
             String path = "/data/data/com.example.filip.myapplication/databases";
             String DATABASE_NAME = "database";
             String DATABASE_PATH = "/data/data/com.example.filip.myapplication/databases/";
@@ -306,9 +307,8 @@ public class MainActivity extends AppCompatActivity {
                     Log.d("check_db_updates", "Sprawdzam co z bazą");
                 }
                 if (new File(DATABASE_PATH + DATABASE_NAME).exists() == false) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "Bazy nima trzeba skopiować");
-                    }
+                    show_debug_message("check_db_updates", "Bazy nima trzeba skopiować");
+
                     new File(DATABASE_PATH).mkdirs();
                     out = new FileOutputStream(DATABASE_PATH + DATABASE_NAME);
                     byte[] buff = new byte[1024];
@@ -320,9 +320,8 @@ public class MainActivity extends AppCompatActivity {
                     out.close();
                     in.close();
                 } else {
-                    if (config.debug == true) {
-                        Log.d("Create", "Baza jest, nie kopiuje");
-                    }
+                    show_debug_message("check_db_updates", "Baza jest, nie kopiuje");
+
                 }
             } catch (IOException e) {
                 if (config.debug == true) {
@@ -335,16 +334,12 @@ public class MainActivity extends AppCompatActivity {
                 e.printStackTrace();
                 throw e;
             }*/
-                if (config.debug == true) {
-                    Log.d("check_db_updates", "Sprawdzam czy baza działa");
-                }
+            show_debug_message("check_db_updates", "Sprawdzam czy baza działa");
                 try {
                     sql = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE);
                     Cursor c = sql.rawQuery("SELECT Dish from Przepisy_do_aplikacji_Erasmus;", null);
                 } catch (Exception e) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "Baza ni działa");
-                    }
+                    show_debug_message("check_db_updates", "Baza ni działa");
                     em = "Baza ni działa";
                     throw e;
                     //System.exit(0);
@@ -366,58 +361,14 @@ public class MainActivity extends AppCompatActivity {
                 db_ver.moveToFirst();
                 String versja = apk_ver.getString(0);
                 if (sharedPref.getString(APK_VERSION_KEY, "").equals("")) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja aplikacji nie zapisana (pierwsze uruchomienie)");
-                    }
+                    show_debug_message("check_db_updates", "versja aplikacji nie zapisana (pierwsze uruchomienie)");
                     editor.putString(APK_VERSION_KEY, pinfo.versionName);
                 } else if (sharedPref.getString(APK_VERSION_KEY, "").equals(pinfo.versionName)) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja aplikacji aktualne");
-                    }
+                    show_debug_message("check_db_updates", "versja aplikacji aktualne");
+
                 } else {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja aplikacji nieaktualne (był update)");
-                    }
-                    editor.putString(APK_VERSION_KEY, pinfo.versionName);
-                }
-                if (versja.equals("-1")) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja aplikacji nie zapisana w db (pierwsze uruchomienie)");
-                    }
-                    sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
-                } else if (versja.equals(pinfo.versionName)) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja aplikacji w db aktualna");
-                    }
-                } else {
-                    if (config.debug == true) {
-                        Log.d("Create", "versja aplikacji w db nie aktualna (był update)");
-                    }
-                    Log.d("sql", "Update _conf set wartosc = " + String.valueOf((char) 34) + pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
-                    sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
-                }
-                versja = db_ver.getString(0);
-                if (sharedPref.getString(DB_VERSION_KEY, "").equals("")) {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja bazy danych nie istnieje (pierwsze uruchomienie)");
-                    }
-                    NotificationManager notificationManager =
-                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        CharSequence name = "woda";
-                        String description = "powiadomienia o picu wody";
-                        NotificationChannel channel = new NotificationChannel("woda", name, NotificationManager.IMPORTANCE_HIGH);
-                        channel.setDescription(description);
-                        channel.setLightColor(Color.BLUE);
-                        channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-                        notificationManager.createNotificationChannel(channel);
-                    }
-                    editor.putString(DB_VERSION_KEY, versja);
-                } else {
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "versja bazy danych: " + versja + " wersja z shared " + sharedPref.getString(DB_VERSION_KEY, ""));
-                        Log.d("check_db_updates", "otwieram baze danych z resoiurces");
-                    }
+                    show_debug_message("check_db_updates", "versja aplikacji nieaktualne (był update)");
+                    show_debug_message("check_db_updates", "otwieram baze danych z resoiurces");
                     try {
                         out = new FileOutputStream(DATABASE_PATH + DATABASE_NAME + ".bak");
                         in = getResources().openRawResource(R.raw.baza);
@@ -442,26 +393,46 @@ public class MainActivity extends AppCompatActivity {
                     db_ver.moveToFirst();
                     String wer = db_ver.getString(0);
                     if (!wer.equals(versja)) {
-                        if (config.debug == true) {
-                            Log.d("check_db_updates", "versja bazy danych nie jest aktualne (był update)");
-                        }
+                        show_debug_message("check_db_updates", "versja bazy danych nie jest aktualne (był update)");
                         sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + wer + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";");
                         editor.putString(DB_VERSION_KEY, wer);
                     } else {
-                        if (config.debug == true) {
-                            Log.d("check_db_updates", "versja bazy danych jest aktualna");
-                        }
+                        show_debug_message("check_db_updates", "versja bazy danych jest aktualna");
                     }
-                    if (config.debug == true) {
-                        Log.d("check_db_updates", "usuwanie tymczasowej bazy danych)");
-                    }
+                    show_debug_message("check_db_updates", "usuwanie tymczasowej bazy danych)");
+
                     new File(DATABASE_PATH + DATABASE_NAME + ".bak").delete();
+                    editor.putString(APK_VERSION_KEY, pinfo.versionName);
                 }
-                if (config.debug == true) {
-                    Log.d("check_db_updates", "aktualnie zainstalowana wersja db " + versja);
+                if (versja.equals("-1")) {
+                    show_debug_message("check_db_updates", "versja aplikacji nie zapisana w db (pierwsze uruchomienie)");
+                    sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
+                } else if (versja.equals(pinfo.versionName)) {
+                    show_debug_message("check_db_updates", "versja aplikacji w db aktualna");
+                } else {
+                    show_debug_message("check_db_updates", "versja aplikacji w db nie aktualna (był update)");
+                    Log.d("sql", "Update _conf set wartosc = " + String.valueOf((char) 34) + pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
+                    sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
                 }
-
-
+                versja = db_ver.getString(0);
+                if (sharedPref.getString(DB_VERSION_KEY, "").equals("")) {
+                    show_debug_message("check_db_updates", "versja bazy danych nie istnieje (pierwsze uruchomienie)");
+                    NotificationManager notificationManager =
+                            (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        CharSequence name = "woda";
+                        String description = "powiadomienia o picu wody";
+                        NotificationChannel channel = new NotificationChannel("woda", name, NotificationManager.IMPORTANCE_HIGH);
+                        channel.setDescription(description);
+                        channel.setLightColor(Color.BLUE);
+                        channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                        notificationManager.createNotificationChannel(channel);
+                    }
+                    editor.putString(DB_VERSION_KEY, versja);
+                } else {
+                    show_debug_message("check_db_updates", "versja bazy danych: " + versja + " wersja z shared " + sharedPref.getString(DB_VERSION_KEY, ""));
+                }
+            show_debug_message("check_db_updates", "aktualnie zainstalowana wersja db " + versja);
             if (config.debug == true) {
                 final Cursor tmp = sql.rawQuery("Select wartosc from _conf;", null);
                 tmp.moveToFirst();
@@ -473,9 +444,6 @@ public class MainActivity extends AppCompatActivity {
                 });
             }
             Cursor c = null;
-            if (config.debug == true) {
-                Log.d("check_db_updates", "Inicjalizuje web view");
-            }
             editor.commit();
         }catch (Exception e){
             throw e;
@@ -497,12 +465,10 @@ public class MainActivity extends AppCompatActivity {
             mhandler = new Handler();
             getSupportActionBar().hide();
             dialog = new ProgressDialog(MainActivity.this);
-            if (config.debug == true) {
-                Log.d("create", "Rozpoczynam");
-                Log.d("create", "Progress dialog");
-            }
+            show_debug_message("create", "Rozpoczynam");
+            show_debug_message("create", "Progress dialog");
             if (!check_net()) {
-                Log.d("create", "Netu nima");
+                show_debug_message("create", "Netu nima");
                 alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
                 alertDialog.setTitle("Nie mamy netu");
                 alertDialog.setMessage("Do działania aplikacji wymagane jest połączenie z internetem (narazie)!!!");
@@ -544,5 +510,6 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
             return;
         }
+        show_debug_message("Create", "Koniec");
     }
 }

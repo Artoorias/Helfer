@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <script src="https://cdn.rawgit.com/wvffle/waff-query/7fcbc5b9/dist/waff-query.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/paper-ripple"></script>
     <script src="https://unpkg.com/vue-router"></script>
     <script src="https://unpkg.com/emojione@2.2.7"></script>
+    <script src="https://unpkg.com/flickity@2.1.0/dist/flickity.pkgd.min.js"></script>
     <link href="https://unpkg.com/paper-ripple@0.3.0/dist/paper-ripple.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/flickity@2.1.0/dist/flickity.css" rel="stylesheet">
+    <link href="https://unpkg.com/reset.css" rel="stylesheet">
     <link href="layoutc.css" rel="stylesheet">
-    <link href="https://wvffle.net/FlashFresh/index/styles/reset.css">
   </head>
   <body>
     <div id="app">
@@ -17,15 +20,125 @@
         <router-view :questions="questions" :sections="sections"></router-view>
       </transition>
     </div>
-    <template id="root-template">
-      <div class="root">
-        <div class="button-wrapper" v-for="section in sections">
-          <router-link class="button" :to="section.button.link">
-            <icon :emoji="section.button.icon"></icon>
-            <div class="content">{{ section.button.content }}</div>
-          </router-link>
+    <template id="slide-view-template">
+      <div class="slides">
+        <div class="slide">
+          <profile-view></profile-view>
+        </div>
+        <div class="slide">
+          <dashboard-view></dashboard-view>
+        </div>
+        <div class="slide">
+          <menu-view></menu-view>
+        </div>
+        <div class="menu slide-menu">
+          <div class="row">
+            <div class="col" :class="{ active: ci === 0 }" @click="change(0)">
+              <paper-button>
+                <icon emoji="😻"></icon>
+              </paper-button>
+            </div>
+            <div class="col" :class="{ active: ci === 1 }" @click="change(1)">
+              <paper-button>
+                <icon emoji="📜"></icon>
+              </paper-button>
+            </div>
+            <div class="col" :class="{ active: ci === 2 }" @click="change(2)">
+              <paper-button>
+                <icon emoji="🌮"></icon>
+              </paper-button>
+            </div>
+          </div>
         </div>
       </div>
+    </template>
+    <template id="profile-template">
+      <div class="profile">
+        <header>
+          <icon emoji="😺"></icon>
+          <svg viewBox="0 0 500 100">
+            <path d="M0 50 Q125 0, 250 50, 375 100, 500 50 L500 100 L0 100 L0 50z" fill="#fff"></path>
+          </svg>
+        </header>
+        <h1>John Doe</h1>
+        <div class="row">
+          <div class="col">
+            <div class="circ">
+              <svg viewbox="0 0 100 100">
+                <circle r="40" cx="50" cy="50" fill="transparent" stroke="#6cf" stroke-width="2"></circle>
+                <circle r="40" cx="50" cy="50" fill="transparent" stroke="#0af" stroke-width="3" style="stroke-dasharray: 100 100;"></circle>
+              </svg>
+              <icon emoji="🏂"></icon>
+            </div>
+          </div>
+          <div class="col">
+            <div class="circ">
+              <svg viewbox="0 0 100 100">
+                <circle r="40" cx="50" cy="50" fill="transparent" stroke="#6cf" stroke-width="2"></circle>
+                <circle r="40" cx="50" cy="50" fill="transparent" stroke="#0af" stroke-width="3"></circle>
+              </svg>
+              <icon emoji="⚔"></icon>
+            </div>
+          </div>
+          <div class="col">
+            <div class="circ">
+              <svg viewbox="0 0 100 100">
+                <circle r="40" cx="50" cy="50" fill="transparent" stroke="#6cf" stroke-width="2"></circle>
+                <circle r="40" cx="50" cy="50" fill="transparent" stroke="#0af" stroke-width="3" style="stroke-dasharray: 160 30;"></circle>
+              </svg>
+              <icon emoji="🍔"></icon>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h2>63kg</h2>
+          </div>
+          <div class="col">
+            <h2>179cm</h2>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col">
+            <h1>
+              <icon emoji="🐷"></icon>
+            </h1>
+            <h1>Your BMI: 19.7</h1>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template id="dashboard-template">
+      <div class="dashboard">
+        <div class="article" v-for="(article, i) in articles">
+          <div class="header">
+            <div class="title">{{ article.title }}</div>
+            <div class="date">{{ article.date }}</div>
+          </div>
+          <div class="content">{{ article.content }}</div>
+        </div>
+      </div>
+    </template>
+    <template id="menu-template">
+      <div class="menu">
+        <div class="row">
+          <div class="col">
+            <div class="circ">
+              <icon emoji="🍕"></icon>
+            </div>
+            <h1>Diet</h1>
+          </div>
+          <div class="col">
+            <div class="circ">
+              <icon emoji="📺"></icon>
+            </div>
+            <h1>Activities</h1>
+          </div>
+        </div>
+      </div>
+    </template>
+    <template id="root-template">
+      <slide-view></slide-view>
     </template>
     <template id="survey-template">
       <div class="survey">
@@ -36,11 +149,13 @@
           </svg>
         </header>
         <div class="content">
-          <div class="question">Question No. {{ questions[idx].prefix }}<span>{{ questions[idx].question }}</span></div>
+          <div class="question">Question No. {{ questions[idx].prefix }}<span>{{questions[idx].question}}</span></div>
+          <div class="answers-spacer"></div>
           <div class="answers">
             <div class="iterator" v-for="(answer, i) in questions[idx].answers">
               <answer v-if="typeof answer === `string`" :answer="answer" :idx="idx" :next="getNext()"></answer>
               <input v-if="answer.type === `input`" :placeholder="answer.placeholder" type="text" v-model="answer.value" required>
+              <input v-if="answer.type === `number`" :placeholder="answer.placeholder" type="number" @keyup="answer.methods.onKeyup" v-model="answer.value" required>
               <div class="checkbox" v-if="answer.type === `checkbox`">
                 <input :id="`checkbox-` + idx + `-` + i" type="checkbox" v-model="answer.checked">
                 <label :for="`checkbox-` + idx + `-` + i"><span></span>{{ answer.value }}</label>
@@ -52,10 +167,12 @@
       </div>
     </template>
     <template id="button-template">
-      <div class="paper-button">{{ title }}</div>
+      <div class="paper-button">
+        <slot></slot>
+      </div>
     </template>
     <template id="answer-template">
-      <paper-button class="answer" :title="answer"></paper-button>
+      <paper-button class="answer">{{ answer }}</paper-button>
     </template>
     <script src="layouts.js"></script>
   </body>
