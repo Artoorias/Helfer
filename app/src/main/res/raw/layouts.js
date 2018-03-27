@@ -1,4 +1,5 @@
-﻿Vue.use(VueRouter);
+﻿//Android.thrownewexception("","");
+Vue.use(VueRouter);
 
 // Ripple effect for buttons
 Vue.component('paper-button', {

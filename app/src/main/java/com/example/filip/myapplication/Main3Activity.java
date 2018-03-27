@@ -56,9 +56,9 @@ public class Main3Activity extends AppCompatActivity {
                     public void onClick(DialogInterface dialog,int which) {
                         Intent intent = new Intent(Intent.ACTION_SEND);
                         intent.setType("text/html");
-                        intent.putExtra(Intent.EXTRA_EMAIL, "luhopolito@carbtc.net");
+                        intent.putExtra(Intent.EXTRA_EMAIL, new String[] {"here@there.ie"});
                         intent.putExtra(Intent.EXTRA_SUBJECT, "We found a bug");
-                        intent.putExtra(Intent.EXTRA_TEXT, "Dear Developer" +String.valueOf((char)13)+String.valueOf((char)10)+"In my android "+android.os.Build.VERSION.SDK_INT+" phone Your application catch unhandled exeption. This is Stack trace and message:"+String.valueOf((char)13)+String.valueOf((char)10)+msg+String.valueOf((char)13)+String.valueOf((char)10)+"But this is additional message = "+addmsg);
+                        intent.putExtra(Intent.EXTRA_TEXT, "Dear Developer" +String.valueOf((char)13)+String.valueOf((char)10)+"In my android "+android.os.Build.VERSION.SDK_INT+" phone Your application catch unhandled exeption. This is Stack trace and message:"+String.valueOf((char)13)+String.valueOf((char)10)+msg+String.valueOf((char)13)+String.valueOf((char)10)+"But this is additional message = "+addmsg+String.valueOf((char)13)+String.valueOf((char)10)+"may be you will be intrested about my log cat: "+String.valueOf((char)13)+String.valueOf((char)10)+MainActivity.logcat);
                         intent.setType("text/plain");
                         startActivity(Intent.createChooser(intent, "Send Email"));                    }
                 });
@@ -70,7 +70,7 @@ public class Main3Activity extends AppCompatActivity {
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main3Activity.this);
                 alertDialog.setTitle("informacje");
-                alertDialog.setMessage(msg);
+                alertDialog.setMessage(msg+String.valueOf((char)13)+String.valueOf((char)10) + "log cat :"+MainActivity.logcat);
                 alertDialog.setCancelable(false);
                 alertDialog.setNegativeButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
@@ -80,7 +80,7 @@ public class Main3Activity extends AppCompatActivity {
                 alertDialog.setPositiveButton("COPY", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog,int which) {
                         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip = ClipData.newPlainText("", msg);
+                        ClipData clip = ClipData.newPlainText("", msg+String.valueOf((char)13)+String.valueOf((char)10) + "log cat :"+MainActivity.logcat);
                         clipboard.setPrimaryClip(clip);
                         Toast.makeText(getApplicationContext(),"skopiowano",Toast.LENGTH_LONG).show();
                     }

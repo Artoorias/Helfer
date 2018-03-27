@@ -29,11 +29,11 @@ public class AlarmReceiver extends BroadcastReceiver{
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
-        Toast.makeText(context, "Recieved!!", Toast.LENGTH_LONG).show();
+/*        Toast.makeText(context, "Recieved!!", Toast.LENGTH_LONG).show();
         intent = new Intent();
         intent.setClass(context, Main2Activity.class); //Test is a dummy class name where to redirect
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        context.startActivity(intent);*/
    /*   final WindowManager manager = (WindowManager) context.getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         WindowManager.LayoutParams layoutParams = new WindowManager.LayoutParams();
         layoutParams.gravity = Gravity.CENTER;
@@ -47,7 +47,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         /*final View view = View.inflate(context.getApplicationContext(),R.layout.activity_main, null);
         manager.addView(view, layoutParams);*/
-/*
+
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             NotificationManager notificationManager =
@@ -90,7 +90,7 @@ public class AlarmReceiver extends BroadcastReceiver{
 
                 notificationManager.notify(0, mBuilder.build());
 
-        }*/
+        }
 
     }
 

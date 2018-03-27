@@ -1,11 +1,11 @@
 package com.example.filip.myapplication;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
-import android.util.Log;
 import android.webkit.JavascriptInterface;
 
 import org.json.JSONArray;
@@ -313,8 +313,7 @@ class WebAppInterface {
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _profile where data=?;", new String[]{"-1"});
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             MainActivity.show_debug_message("profile_Get_Lastest_Da", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
         } finally {
@@ -323,6 +322,7 @@ class WebAppInterface {
             return "{ success: true, data: " + cursorToString(c) + "}";
         }
     }
+
     /**
      * update lastest profile data
      *
@@ -330,16 +330,15 @@ class WebAppInterface {
      * @param first_name waga
      * @param first_name wzrost
      * @param first_name drunked_water
-     *
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String profile_lastest_update(@NonNull String first_name,@NonNull String Waga,@NonNull String Wzrost, @NonNull String drunked_water) {
+    public static String profile_lastest_update(@NonNull String first_name, @NonNull String Waga, @NonNull String Wzrost, @NonNull String drunked_water) {
         MainActivity.show_debug_message("profile_lastest_update", "Zaczynam");
-        MainActivity.show_debug_message("profile_lastest_update", "first_name = "+first_name+" Waga = "+Waga+" Wzrost = " + Wzrost + "wypita woda = "+drunked_water);
+        MainActivity.show_debug_message("profile_lastest_update", "first_name = " + first_name + " Waga = " + Waga + " Wzrost = " + Wzrost + "wypita woda = " + drunked_water);
         Cursor c = null;
         try {
-            sql.execSQL("Update _profil SET first_name = ?, waga = ?, wzrost = ?,drunked_water = ? where data=?;", new String[]{first_name,Waga,Wzrost,drunked_water,"-1"});
+            sql.execSQL("Update _profil SET first_name = ?, waga = ?, wzrost = ?,drunked_water = ? where data=?;", new String[]{first_name, Waga, Wzrost, drunked_water, "-1"});
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
             MainActivity.show_debug_message("write_survey_data", "błąd: " + e.getMessage());
@@ -349,6 +348,7 @@ class WebAppInterface {
             return "{ success: true}";
         }
     }
+
     /**
      * create snapschot form lastest profile state
      *
@@ -369,22 +369,22 @@ class WebAppInterface {
             return "{ success: true}";
         }
     }
+
     /**
      * get resource file
      *
      * @param tabela String name of table
-     * @param row String witch id of row in tabela
+     * @param row    String witch id of row in tabela
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
     public static String get_resources(String tabela, String row) {
         MainActivity.show_debug_message("get_resources", "Zaczynam");
-        MainActivity.show_debug_message("get_resources","tabela "+tabela+" row "+row);
+        MainActivity.show_debug_message("get_resources", "tabela " + tabela + " row " + row);
         Cursor c = null;
         try {
-            c = sql.rawQuery("Select * from zalaczniki where tabela = ? and row = ?", new String[]{tabela,row});
-        } catch (Exception e)
-        {
+            c = sql.rawQuery("Select * from zalaczniki where tabela = ? and row = ?", new String[]{tabela, row});
+        } catch (Exception e) {
             MainActivity.show_debug_message("get_resources", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
@@ -392,22 +392,37 @@ class WebAppInterface {
             return "{ success: true, data: " + cursorToString(c) + "}";
         }
     }
+
     /**
      * send exception to Helfer Error handler
      *
-     * @param message String message about error
+     * @param message           String message about error
      * @param additionalmessage String user friendly message about error
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public void thrownewexception(String message, String additionalmessage){
-        MainActivity.show_debug_message("thrownewexception","zaczynam");
-        MainActivity.show_debug_message("thrownewexception","message "+message+" addmsg "+additionalmessage);
+    public void thrownewexception(String message, String additionalmessage) {
+        MainActivity.show_debug_message("thrownewexception", "zaczynam");
+        MainActivity.show_debug_message("thrownewexception", "message " + message + " addmsg " + additionalmessage);
         Intent err = new Intent(mContext, Main3Activity.class);
-        err.putExtra("exception", (Serializable) new Exception("Sended by layout:"+message));
-        err.putExtra("add_info", "Sended by layout:"+additionalmessage);
+        err.putExtra("exception", (Serializable) new Exception("Sended by layout:" + message));
+        err.putExtra("add_info", "Sended by layout:" + additionalmessage);
         mContext.startActivity(err);
+        ((Activity)mContext).finish();
         new Exception(message).printStackTrace();
+        return;
+    }
+
+    /**
+     * Log
+     *
+     * @param tag     String tag of message
+     * @param message String message
+     * @return String Json operation status (witch error)
+     */
+    @JavascriptInterface
+    public void log(String tag, String message) {
+        MainActivity.show_debug_message(tag, message);
         return;
     }
 }
