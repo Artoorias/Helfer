@@ -163,7 +163,7 @@ body {
 .survey .content .answers-spacer {
   height: 100%;
 }
-.paper-button {
+.v-touch-ripple {
   position: relative;
   padding: 17px;
   text-align: center;
@@ -173,6 +173,7 @@ body {
   -ms-user-select: none;
   user-select: none;
   font-weight: 300;
+  display: block !important;
 }
 *,
 ::after,
@@ -391,6 +392,7 @@ input[type=number]::-webkit-outer-spin-button {
   font-family: Raleway;
   color: #666;
   overflow: auto;
+  touch-action: pan-y !important;
 }
 .slides > .menu {
   position: fixed;
@@ -401,12 +403,12 @@ input[type=number]::-webkit-outer-spin-button {
 .slides > .menu .row {
   border-top: 2px solid #0af;
 }
-.slides > .menu .col .paper-button {
+.slides > .menu .col .v-touch-ripple {
   height: 64px;
   width: 100%;
   filter: grayscale(1);
 }
-.slides > .menu .col.active .paper-button {
+.slides > .menu .col.active .v-touch-ripple {
   filter: none;
 }
 .slides > .menu .col .icon img {

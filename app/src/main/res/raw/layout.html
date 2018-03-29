@@ -1,15 +1,14 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
     <script src="https://cdn.rawgit.com/wvffle/waff-query/7fcbc5b9/dist/waff-query.js"></script>
     <script src="https://unpkg.com/vue"></script>
-    <script src="https://unpkg.com/paper-ripple"></script>
     <script src="https://unpkg.com/vue-router"></script>
     <script src="https://unpkg.com/emojione@2.2.7"></script>
     <script src="https://unpkg.com/flickity@2.1.0/dist/flickity.pkgd.min.js"></script>
-    <link href="https://unpkg.com/paper-ripple@0.3.0/dist/paper-ripple.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/vue-touch-ripple"></script>
+    <link href="https://unpkg.com/vue-touch-ripple/dist/vue-touch-ripple.css" rel="stylesheet">
     <link href="https://unpkg.com/flickity@2.1.0/dist/flickity.css" rel="stylesheet">
     <link href="https://unpkg.com/reset.css" rel="stylesheet">
     <link href="layoutc.css" rel="stylesheet">
@@ -33,20 +32,20 @@
         </div>
         <div class="menu slide-menu">
           <div class="row">
-            <div class="col" :class="{ active: ci === 0 }" @click="change(0)">
-              <paper-button>
+            <div class="col" :class="{ active: ci === 0 }" @mouseup="flickity.select(0)">
+              <touch-ripple>
                 <icon emoji="😻"></icon>
-              </paper-button>
+              </touch-ripple>
             </div>
-            <div class="col" :class="{ active: ci === 1 }" @click="change(1)">
-              <paper-button>
+            <div class="col" :class="{ active: ci === 1 }" @mouseup="flickity.select(1)">
+              <touch-ripple>
                 <icon emoji="📜"></icon>
-              </paper-button>
+              </touch-ripple>
             </div>
-            <div class="col" :class="{ active: ci === 2 }" @click="change(2)">
-              <paper-button>
+            <div class="col" :class="{ active: ci === 2 }" @mouseup="flickity.select(2)">
+              <touch-ripple>
                 <icon emoji="🌮"></icon>
-              </paper-button>
+              </touch-ripple>
             </div>
           </div>
         </div>
@@ -166,13 +165,8 @@
         </div>
       </div>
     </template>
-    <template id="button-template">
-      <div class="paper-button">
-        <slot></slot>
-      </div>
-    </template>
     <template id="answer-template">
-      <paper-button class="answer">{{ answer }}</paper-button>
+      <touch-ripple class="answer">{{ answer }}</touch-ripple>
     </template>
     <script src="layouts.js"></script>
   </body>

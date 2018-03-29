@@ -6,4 +6,5 @@ package com.example.filip.myapplication;
 
 final class config {
     final static public boolean debug = true;
+    final static public String email = "helferbugtracker@protonmail.com";
 }

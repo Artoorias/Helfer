@@ -1,30 +1,9 @@
-﻿//Android.thrownewexception("","");
-Vue.use(VueRouter);
+﻿Vue.use(VueRouter);
 
 // Ripple effect for buttons
-Vue.component('paper-button', {
-  template: '#button-template',
-  props: ['title'],
-  mounted: function mounted() {
-    var $el = this.$el;
-
-    var ripple = new PaperRipple();
-
-    $el.append(ripple.$);
-
-    $el.on('touchstart', function (ev) {
-      return ripple.downAction(ev);
-    });
-    $el.on('touchend', function (ev) {
-      return ripple.upAction();
-    });
-    $el.on('mousedown', function (ev) {
-      return ripple.downAction(ev);
-    });
-    $el.on('mouseup', function (ev) {
-      return ripple.upAction();
-    });
-  }
+Vue.use(VueTouchRipple, {
+  color: '#666',
+  opacity: 0.12
 });
 
 // Render answers as buttons
@@ -178,12 +157,6 @@ Vue.component('slide-view', {
     return {
       ci: 1
     };
-  },
-
-  methods: {
-    change: function change(i) {
-      this.flickity.select(i);
-    }
   }
 });
 

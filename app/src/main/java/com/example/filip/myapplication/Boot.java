@@ -21,8 +21,8 @@ public class Boot extends BroadcastReceiver{
         alarmMgr = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         Intent it = new Intent(context.getApplicationContext(), AlarmReceiver.class);
         Calendar calendar = Calendar.getInstance();
-        MainActivity.show_debug_message("BOOT","woda_1 prepare");
-        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), MainActivity.WODA_1, it, 0);
+        utils.show_debug_message("BOOT","woda_1 prepare");
+        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), InitRunable.WODA_1, it, 0);
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 17);
         calendar.set(Calendar.MINUTE, 30);
@@ -34,8 +34,8 @@ public class Boot extends BroadcastReceiver{
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                 AlarmManager.INTERVAL_DAY, alarmIntent);
 
-        MainActivity.show_debug_message("BOOT","woda_2 prepare");
-        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), MainActivity.WODA_2, it, 0);
+        utils.show_debug_message("BOOT","woda_2 prepare");
+        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), InitRunable.WODA_2, it, 0);
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 7);

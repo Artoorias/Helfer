@@ -30,45 +30,7 @@ class WebAppInterface {
         sql = sqla;
     }
 
-    private static String cursorToString(Cursor crs) {
-        JSONArray arr = new JSONArray();
-        crs.moveToFirst();
-        while (!crs.isAfterLast()) {
-            int nColumns = crs.getColumnCount();
-            JSONObject row = new JSONObject();
-            for (int i = 0; i < nColumns; i++) {
-                String colName = crs.getColumnName(i);
-                if (colName != null) {
-                    String val = "";
-                    try {
-                        switch (crs.getType(i)) {
-                            case Cursor.FIELD_TYPE_BLOB:
-                                row.put(colName, crs.getBlob(i).toString());
-                                break;
-                            case Cursor.FIELD_TYPE_FLOAT:
-                                row.put(colName, crs.getDouble(i));
-                                break;
-                            case Cursor.FIELD_TYPE_INTEGER:
-                                row.put(colName, crs.getLong(i));
-                                break;
-                            case Cursor.FIELD_TYPE_NULL:
-                                row.put(colName, null);
-                                break;
-                            case Cursor.FIELD_TYPE_STRING:
-                                row.put(colName, crs.getString(i));
-                                break;
-                        }
-                    } catch (JSONException e) {
-                    }
-                }
-            }
-            arr.put(row);
-            if (!crs.moveToNext())
-                break;
-        }
-        crs.close(); // close the cursor
-        return arr.toString();
-    }
+    
 
     /**
      * Get information from
@@ -89,10 +51,10 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String get_Data(@NonNull int req) {
-        MainActivity.show_debug_message("get_Data", "Rozpoczynam");
+        utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
-            MainActivity.show_debug_message("get_Data", "req = " + req);
+            utils.show_debug_message("get_Data", "req = " + req);
             switch (req) {
                 case 1:
                     c = sql.rawQuery("SELECT * from zywienie;", null);
@@ -117,20 +79,20 @@ class WebAppInterface {
             }
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("get_Data", e.getMessage());
+            utils.show_debug_message("get_Data", e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
-            MainActivity.show_debug_message("get_Data", cursorToString(c));
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            utils.show_debug_message("get_Data", utils.cursorToString(c));
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
     @JavascriptInterface
     public static String get_Data(@NonNull int req, @NonNull String option_1) {
-        MainActivity.show_debug_message("get_Data", "Rozpoczynam");
+        utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
-            MainActivity.show_debug_message("get_Data", "req = " + req + " option1 = " + option_1);
+            utils.show_debug_message("get_Data", "req = " + req + " option1 = " + option_1);
             switch (req) {
                 case 10:
                     c = sql.rawQuery("SELECT * from artykoly where grupa_wiekowa = ?;", new String[]{option_1});
@@ -143,20 +105,20 @@ class WebAppInterface {
             }
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("get_Data", e.getMessage());
+            utils.show_debug_message("get_Data", e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
-            MainActivity.show_debug_message("get_Data", cursorToString(c));
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            utils.show_debug_message("get_Data", utils.cursorToString(c));
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
     @JavascriptInterface
     public static String get_Data(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3) {
-        MainActivity.show_debug_message("get_Data", "Rozpoczynam");
+        utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
-            MainActivity.show_debug_message("get_Data", "req = " + req + " option1 = " + option_1);
+            utils.show_debug_message("get_Data", "req = " + req + " option1 = " + option_1);
             switch (req) {
                 case 9:
                     c = sql.rawQuery("SELECT * from zywienie where przeciwskazania = ? and wegetarianizm = ? and weganizm = ?;", new String[]{option_1, option_2, option_3});
@@ -166,11 +128,11 @@ class WebAppInterface {
             }
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("get_Data", e.getMessage());
+            utils.show_debug_message("get_Data", e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
-            MainActivity.show_debug_message("get_Data", cursorToString(c));
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            utils.show_debug_message("get_Data", utils.cursorToString(c));
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
@@ -183,15 +145,15 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String write_Survey_Data(@NonNull String key, @NonNull String value) {
-        MainActivity.show_debug_message("write_Survey_Data", "Rozpoczynam, key: " + key + " value: " + value);
+        utils.show_debug_message("write_Survey_Data", "Rozpoczynam, key: " + key + " value: " + value);
         try {
             sql.execSQL("INSERT INTO _Ankieta (" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + "," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + ") VALUES (?,?);", new String[]{key, value});
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("write_Survey_Data", "błąd: " + e.getMessage());
+            utils.show_debug_message("write_Survey_Data", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
-            MainActivity.show_debug_message("write_Survey_Data", "ok");
+            utils.show_debug_message("write_Survey_Data", "ok");
             return "{ success: true}";
         }
     }
@@ -206,15 +168,15 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String update_Survey_Data(@NonNull Integer id, @NonNull String key, @NonNull String value) {
-        MainActivity.show_debug_message("update_Survey_Data", "Rozpoczynam id = " + id + " key = " + key + " value = " + value);
+        utils.show_debug_message("update_Survey_Data", "Rozpoczynam id = " + id + " key = " + key + " value = " + value);
         try {
             sql.execSQL("UPDATE _Ankieta SET" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + " = ? ," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + " = ? WHERE id = " + id.toString() + ";", new String[]{key, value});
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("update_Survey_Data", "Błąd " + e.getMessage());
+            utils.show_debug_message("update_Survey_Data", "Błąd " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
-            MainActivity.show_debug_message("update_Survey_Data", "OK");
+            utils.show_debug_message("update_Survey_Data", "OK");
             return "{ success: true}";
         }
     }
@@ -227,17 +189,17 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String get_Survey_Info_By_Id(@NonNull Integer id) {
-        MainActivity.show_debug_message("get_Survey_Info_By_Id", "Rozpoczynam id = " + id);
+        utils.show_debug_message("get_Survey_Info_By_Id", "Rozpoczynam id = " + id);
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _Ankieta where id = " + id.toString() + ";", null);
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("get_Survey_Info_By_Id", "błąd: " + e.getMessage());
+            utils.show_debug_message("get_Survey_Info_By_Id", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
         } finally {
-            MainActivity.show_debug_message("get_Survey_Info_By_Id", "OK");
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            utils.show_debug_message("get_Survey_Info_By_Id", "OK");
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
@@ -248,17 +210,17 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String get_Survey_Info_All() {
-        MainActivity.show_debug_message("get_Survey_Info_All", "Zaczynam");
+        utils.show_debug_message("get_Survey_Info_All", "Zaczynam");
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _Ankieta;", null);
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("get_Survey_Info_All", "błąd: " + e.getMessage());
+            utils.show_debug_message("get_Survey_Info_All", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
         } finally {
-            MainActivity.show_debug_message("get_Survey_Info_All", "OK");
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            utils.show_debug_message("get_Survey_Info_All", "OK");
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
@@ -269,14 +231,14 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String wyczysc() {
-        MainActivity.show_debug_message("wyczysc", "Rozpoczynam");
+        utils.show_debug_message("wyczysc", "Rozpoczynam");
         try {
             sql.execSQL("VACUUM;", null);
         } catch (Exception e) {
-            MainActivity.show_debug_message("wyczysc", "Błąd: " + e.getMessage());
+            utils.show_debug_message("wyczysc", "Błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "'}";
         } finally {
-            MainActivity.show_debug_message("wyczysc", "OK");
+            utils.show_debug_message("wyczysc", "OK");
             return "{ success: true}";
         }
     }
@@ -288,17 +250,17 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String profile_Get_Data() {
-        MainActivity.show_debug_message("profile_Get_Data", "Zaczynam");
+        utils.show_debug_message("profile_Get_Data", "Zaczynam");
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _profile;", null);
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("profile_Get_Data", "błąd: " + e.getMessage());
+            utils.show_debug_message("profile_Get_Data", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
         } finally {
-            MainActivity.show_debug_message("profile_Get_Data", "OK");
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            utils.show_debug_message("profile_Get_Data", "OK");
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
@@ -309,17 +271,17 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String profile_Get_Lastest_Data() {
-        MainActivity.show_debug_message("profile_Get_Lastest_Da", "Zaczynam");
+        utils.show_debug_message("profile_Get_Lastest_Da", "Zaczynam");
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _profile where data=?;", new String[]{"-1"});
         } catch (Exception e) {
-            MainActivity.show_debug_message("profile_Get_Lastest_Da", "błąd: " + e.getMessage());
+            utils.show_debug_message("profile_Get_Lastest_Da", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
         } finally {
-            MainActivity.show_debug_message("profile_Get_Lastest_Da", "OK");
+            utils.show_debug_message("profile_Get_Lastest_Da", "OK");
 
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
@@ -334,17 +296,17 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String profile_lastest_update(@NonNull String first_name, @NonNull String Waga, @NonNull String Wzrost, @NonNull String drunked_water) {
-        MainActivity.show_debug_message("profile_lastest_update", "Zaczynam");
-        MainActivity.show_debug_message("profile_lastest_update", "first_name = " + first_name + " Waga = " + Waga + " Wzrost = " + Wzrost + "wypita woda = " + drunked_water);
+        utils.show_debug_message("profile_lastest_update", "Zaczynam");
+        utils.show_debug_message("profile_lastest_update", "first_name = " + first_name + " Waga = " + Waga + " Wzrost = " + Wzrost + "wypita woda = " + drunked_water);
         Cursor c = null;
         try {
             sql.execSQL("Update _profil SET first_name = ?, waga = ?, wzrost = ?,drunked_water = ? where data=?;", new String[]{first_name, Waga, Wzrost, drunked_water, "-1"});
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("write_survey_data", "błąd: " + e.getMessage());
+            utils.show_debug_message("write_survey_data", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
-            MainActivity.show_debug_message("write_survey_data", "ok");
+            utils.show_debug_message("write_survey_data", "ok");
             return "{ success: true}";
         }
     }
@@ -356,16 +318,16 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String create_new_snapschot() {
-        MainActivity.show_debug_message("create_new_snapschot", "Zaczynam");
+        utils.show_debug_message("create_new_snapschot", "Zaczynam");
         Cursor c = null;
         try {
             sql.execSQL("insert into _profil (first_name,waga,wzrost,drunked_water,data) select first_name,waga,wzrost,drunked_water,date() from _profil where data = \"-1\";", null);
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
-            MainActivity.show_debug_message("create_new_snapschot", "błąd: " + e.getMessage());
+            utils.show_debug_message("create_new_snapschot", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
-            MainActivity.show_debug_message("create_new_snapschot", "ok");
+            utils.show_debug_message("create_new_snapschot", "ok");
             return "{ success: true}";
         }
     }
@@ -379,17 +341,17 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public static String get_resources(String tabela, String row) {
-        MainActivity.show_debug_message("get_resources", "Zaczynam");
-        MainActivity.show_debug_message("get_resources", "tabela " + tabela + " row " + row);
+        utils.show_debug_message("get_resources", "Zaczynam");
+        utils.show_debug_message("get_resources", "tabela " + tabela + " row " + row);
         Cursor c = null;
         try {
             c = sql.rawQuery("Select * from zalaczniki where tabela = ? and row = ?", new String[]{tabela, row});
         } catch (Exception e) {
-            MainActivity.show_debug_message("get_resources", "błąd: " + e.getMessage());
+            utils.show_debug_message("get_resources", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
         } finally {
-            MainActivity.show_debug_message("get_resources", "ok");
-            return "{ success: true, data: " + cursorToString(c) + "}";
+            utils.show_debug_message("get_resources", "ok");
+            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
     }
 
@@ -402,8 +364,8 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public void thrownewexception(String message, String additionalmessage) {
-        MainActivity.show_debug_message("thrownewexception", "zaczynam");
-        MainActivity.show_debug_message("thrownewexception", "message " + message + " addmsg " + additionalmessage);
+        utils.show_debug_message("thrownewexception", "zaczynam");
+        utils.show_debug_message("thrownewexception", "message " + message + " addmsg " + additionalmessage);
         Intent err = new Intent(mContext, Main3Activity.class);
         err.putExtra("exception", (Serializable) new Exception("Sended by layout:" + message));
         err.putExtra("add_info", "Sended by layout:" + additionalmessage);
@@ -422,7 +384,7 @@ class WebAppInterface {
      */
     @JavascriptInterface
     public void log(String tag, String message) {
-        MainActivity.show_debug_message(tag, message);
+        utils.show_debug_message(tag, message);
         return;
     }
 }
