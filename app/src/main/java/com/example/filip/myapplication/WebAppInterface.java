@@ -8,10 +8,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.annotation.NonNull;
 import android.webkit.JavascriptInterface;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import java.io.Serializable;
 
 /**
@@ -30,7 +26,6 @@ class WebAppInterface {
         sql = sqla;
     }
 
-    
 
     /**
      * Get information from
@@ -77,8 +72,7 @@ class WebAppInterface {
                 default:
                     return "{ success: false, error: 'unknown request' }";
             }
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
-        {
+        } catch (Exception e) {
             utils.show_debug_message("get_Data", e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
@@ -103,8 +97,7 @@ class WebAppInterface {
                 default:
                     return "{ success: false, error: 'unknown request' }";
             }
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
-        {
+        } catch (Exception e) {
             utils.show_debug_message("get_Data", e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
@@ -370,7 +363,7 @@ class WebAppInterface {
         err.putExtra("exception", (Serializable) new Exception("Sended by layout:" + message));
         err.putExtra("add_info", "Sended by layout:" + additionalmessage);
         mContext.startActivity(err);
-        ((Activity)mContext).finish();
+        ((Activity) mContext).finish();
         new Exception(message).printStackTrace();
         return;
     }

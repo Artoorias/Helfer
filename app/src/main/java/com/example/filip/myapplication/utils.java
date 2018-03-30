@@ -11,7 +11,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,13 +26,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 
 public class utils {
-    static String logcat = "";
-    private static SharedPreferences sharedPref;
-    private static SharedPreferences.Editor editor;
     private final static String PREFERENCES_NAME = "conf";
     private final static String APK_VERSION_KEY = "APK_VERSION";
     private final static String DB_VERSION_KEY = "DB_VERSION";
-     public static String cursorToString(@NonNull Cursor crs) {
+    static String logcat = "";
+    private static SharedPreferences sharedPref;
+    private static SharedPreferences.Editor editor;
+
+    public static String cursorToString(@NonNull Cursor crs) {
         JSONArray arr = new JSONArray();
         crs.moveToFirst();
         while (!crs.isAfterLast()) {
@@ -69,15 +69,17 @@ public class utils {
             if (!crs.moveToNext())
                 break;
         }
-        crs.close(); // close the cursor
+        crs.close();
         return arr.toString();
     }
+
     static void show_debug_message(String tag, String msg) {
         logcat += tag + ": " + msg + String.valueOf((char) 13) + String.valueOf((char) 10);
         if (config.debug == true) {
             Log.d(tag, msg);
         }
     }
+
     protected static boolean check_db_updates(final Context cnt) throws Exception {
         try {
             sharedPref = cnt.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
@@ -95,7 +97,6 @@ public class utils {
                         MainActivity.dialog.setMessage("weryfikacja bazy danych");
                     }
                 });
-                //Thread.sleep(1000);
                 if (config.debug == true) {
                     Log.d("check_db_updates", "Sprawdzam co z bazą");
                 }
@@ -123,14 +124,11 @@ public class utils {
                 e.printStackTrace();
                 MainActivity.em = "ProblMainActivity.emy z kopiowaniMainActivity.em bazy";
                 throw e;
-            } /*catch (InterruptedException e) {
-                e.printStackTrace();
-                throw e;
-            }*/
+            }
             show_debug_message("check_db_updates", "Sprawdzam czy baza działa");
             try {
                 MainActivity.sql = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE);
-                Cursor c =  MainActivity.sql.rawQuery("SELECT Dish from Przepisy_do_aplikacji_Erasmus;", null);
+                Cursor c = MainActivity.sql.rawQuery("SELECT Dish from Przepisy_do_aplikacji_Erasmus;", null);
             } catch (Exception e) {
                 show_debug_message("check_db_updates", "Baza ni działa");
                 MainActivity.em = "Baza ni działa";
@@ -148,15 +146,15 @@ public class utils {
                 }
             });
             Thread.sleep(1000);
-            Cursor db_ver =  MainActivity.sql.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";", null);
-            Cursor apk_ver =  MainActivity.sql.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";", null);
+            Cursor db_ver = MainActivity.sql.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";", null);
+            Cursor apk_ver = MainActivity.sql.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";", null);
             apk_ver.moveToFirst();
             db_ver.moveToFirst();
             String versja = apk_ver.getString(0);
             if (sharedPref.getString(APK_VERSION_KEY, "").equals("")) {
                 show_debug_message("check_db_updates", "versja aplikacji nie zapisana (pierwsze uruchomienie)");
                 editor.putString(APK_VERSION_KEY, MainActivity.pinfo.versionName);
-            } else if (sharedPref.getString(APK_VERSION_KEY, "").equals( MainActivity.pinfo.versionName)) {
+            } else if (sharedPref.getString(APK_VERSION_KEY, "").equals(MainActivity.pinfo.versionName)) {
                 show_debug_message("check_db_updates", "versja aplikacji aktualne");
 
             } else {
@@ -195,17 +193,17 @@ public class utils {
                 show_debug_message("check_db_updates", "usuwanie tymczasowej bazy danych)");
 
                 new File(DATABASE_PATH + DATABASE_NAME + ".bak").delete();
-                editor.putString(APK_VERSION_KEY,  MainActivity.pinfo.versionName);
+                editor.putString(APK_VERSION_KEY, MainActivity.pinfo.versionName);
             }
             if (versja.equals("-1")) {
                 show_debug_message("check_db_updates", "versja aplikacji nie zapisana w db (pierwsze uruchomienie)");
-                MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) +  MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
-            } else if (versja.equals( MainActivity.pinfo.versionName)) {
+                MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
+            } else if (versja.equals(MainActivity.pinfo.versionName)) {
                 show_debug_message("check_db_updates", "versja aplikacji w db aktualna");
             } else {
                 show_debug_message("check_db_updates", "versja aplikacji w db nie aktualna (był update)");
-                Log.d("sql", "Update _conf set wartosc = " + String.valueOf((char) 34) +  MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
-                MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) +  MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
+                Log.d("sql", "Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
+                MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
             }
             versja = db_ver.getString(0);
             if (sharedPref.getString(DB_VERSION_KEY, "").equals("")) {
@@ -227,7 +225,7 @@ public class utils {
             }
             show_debug_message("check_db_updates", "aktualnie zainstalowana wersja db " + versja);
             if (config.debug == true) {
-                final Cursor tmp =  MainActivity.sql.rawQuery("Select wartosc from _conf;", null);
+                final Cursor tmp = MainActivity.sql.rawQuery("Select wartosc from _conf;", null);
                 tmp.moveToFirst();
                 MainActivity.mhandler.post(new Runnable() {
                     @Override

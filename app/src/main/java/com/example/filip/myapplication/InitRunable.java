@@ -45,11 +45,6 @@ public class InitRunable implements Runnable {
                     MainActivity.dialog.show();
                 }
             });
-               /* try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
             SensorManager sensorMgr = (SensorManager) cnt.getSystemService(cnt.SENSOR_SERVICE);
             sensorMgr.registerListener(new sl(cnt),
                     SensorManager.SENSOR_ACCELEROMETER,
@@ -119,11 +114,6 @@ public class InitRunable implements Runnable {
                     MainActivity.dialog.setMessage("Powiadomienia...");
                 }
             });
-               /* try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
             ((Activity) cnt).findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -174,16 +164,6 @@ public class InitRunable implements Runnable {
                 @Override
                 public void run() {
                     MainActivity.dialog.setMessage("Inicjalizacja wyglądu...");
-                }
-            });
-               /* try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }*/
-            MainActivity.mhandler.post(new Runnable() {
-                @Override
-                public void run() {
                     WebView web = (WebView) ((Activity) cnt).findViewById(R.id.strona);
                     web.getSettings().setJavaScriptEnabled(true);
                     web.getSettings().setAllowFileAccess(true);

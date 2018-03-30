@@ -1,8 +1,6 @@
 package com.example.filip.myapplication;
 
-import android.app.AlarmManager;
 import android.app.AlertDialog;
-import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -29,10 +27,6 @@ public class MainActivity extends AppCompatActivity {
     static String em = "";
     android.support.v7.app.AlertDialog al;
     android.support.v7.app.AlertDialog.Builder alertDialog;
-
-
-
-    
 
     protected void onStop() {
         if (config.debug == true) {
@@ -81,7 +75,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-   
 
     protected boolean check_net() throws Exception {
         ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -95,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             setContentView(R.layout.activity_main);
             InitRunable.cnt = MainActivity.this;
-                    mhandler = new Handler();
+            mhandler = new Handler();
             getSupportActionBar().hide();
             dialog = new ProgressDialog(MainActivity.this);
             utils.show_debug_message("create", "Rozpoczynam");
