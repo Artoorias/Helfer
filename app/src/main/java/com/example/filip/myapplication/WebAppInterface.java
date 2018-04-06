@@ -15,9 +15,6 @@ import java.io.Serializable;
  */
 
 class WebAppInterface {
-    /**
-     * Instantiate the interface and set the context
-     */
     public static SQLiteDatabase sql;
     Context mContext;
 
@@ -45,7 +42,7 @@ class WebAppInterface {
      * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
      */
     @JavascriptInterface
-    public static String get_Data(@NonNull int req) {
+    public static String getData(@NonNull int req) {
         utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
@@ -82,7 +79,7 @@ class WebAppInterface {
     }
 
     @JavascriptInterface
-    public static String get_Data(@NonNull int req, @NonNull String option_1) {
+    public static String getData(@NonNull int req, @NonNull String option_1) {
         utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
@@ -107,7 +104,7 @@ class WebAppInterface {
     }
 
     @JavascriptInterface
-    public static String get_Data(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3) {
+    public static String getData(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3) {
         utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
@@ -119,7 +116,7 @@ class WebAppInterface {
                 default:
                     return "{ success: false, error: 'unknown request' }";
             }
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        } catch (Exception e)
         {
             utils.show_debug_message("get_Data", e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
@@ -137,11 +134,11 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String write_Survey_Data(@NonNull String key, @NonNull String value) {
+    public static String writeSurveyData(@NonNull String key, @NonNull String value) {
         utils.show_debug_message("write_Survey_Data", "Rozpoczynam, key: " + key + " value: " + value);
         try {
             sql.execSQL("INSERT INTO _Ankieta (" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + "," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + ") VALUES (?,?);", new String[]{key, value});
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        } catch (Exception e)
         {
             utils.show_debug_message("write_Survey_Data", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
@@ -160,11 +157,11 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String update_Survey_Data(@NonNull Integer id, @NonNull String key, @NonNull String value) {
+    public static String updateSurveyData(@NonNull Integer id, @NonNull String key, @NonNull String value) {
         utils.show_debug_message("update_Survey_Data", "Rozpoczynam id = " + id + " key = " + key + " value = " + value);
         try {
             sql.execSQL("UPDATE _Ankieta SET" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + " = ? ," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + " = ? WHERE id = " + id.toString() + ";", new String[]{key, value});
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        } catch (Exception e)
         {
             utils.show_debug_message("update_Survey_Data", "Błąd " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
@@ -181,7 +178,7 @@ class WebAppInterface {
      * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
      */
     @JavascriptInterface
-    public static String get_Survey_Info_By_Id(@NonNull Integer id) {
+    public static String getSurveyInfoById(@NonNull Integer id) {
         utils.show_debug_message("get_Survey_Info_By_Id", "Rozpoczynam id = " + id);
         Cursor c = null;
         try {
@@ -202,15 +199,15 @@ class WebAppInterface {
      * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
      */
     @JavascriptInterface
-    public static String get_Survey_Info_All() {
+    public static String getSurveyInfoAll() {
         utils.show_debug_message("get_Survey_Info_All", "Zaczynam");
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _Ankieta;", null);
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        } catch (Exception e)
         {
             utils.show_debug_message("get_Survey_Info_All", "błąd: " + e.getMessage());
-            return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
+            return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
             utils.show_debug_message("get_Survey_Info_All", "OK");
             return "{ success: true, data: " + utils.cursorToString(c) + "}";
@@ -223,7 +220,7 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String wyczysc() {
+    public static String clear() {
         utils.show_debug_message("wyczysc", "Rozpoczynam");
         try {
             sql.execSQL("VACUUM;", null);
@@ -242,15 +239,15 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String profile_Get_Data() {
+    public static String profileGetData() {
         utils.show_debug_message("profile_Get_Data", "Zaczynam");
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _profile;", null);
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        } catch (Exception e)
         {
             utils.show_debug_message("profile_Get_Data", "błąd: " + e.getMessage());
-            return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
+            return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
             utils.show_debug_message("profile_Get_Data", "OK");
             return "{ success: true, data: " + utils.cursorToString(c) + "}";
@@ -263,14 +260,14 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String profile_Get_Lastest_Data() {
+    public static String profileGetLastestData() {
         utils.show_debug_message("profile_Get_Lastest_Da", "Zaczynam");
         Cursor c = null;
         try {
             c = sql.rawQuery("SELECT * from _profile where data=?;", new String[]{"-1"});
         } catch (Exception e) {
             utils.show_debug_message("profile_Get_Lastest_Da", "błąd: " + e.getMessage());
-            return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
+            return "{ success: false, error: '" + e.getMessage() + "' }";
         } finally {
             utils.show_debug_message("profile_Get_Lastest_Da", "OK");
 
@@ -288,13 +285,13 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String profile_lastest_update(@NonNull String first_name, @NonNull String Waga, @NonNull String Wzrost, @NonNull String drunked_water) {
+    public static String profileLastestUpdate(@NonNull String first_name, @NonNull String Waga, @NonNull String Wzrost, @NonNull String drunked_water) {
         utils.show_debug_message("profile_lastest_update", "Zaczynam");
         utils.show_debug_message("profile_lastest_update", "first_name = " + first_name + " Waga = " + Waga + " Wzrost = " + Wzrost + "wypita woda = " + drunked_water);
         Cursor c = null;
         try {
             sql.execSQL("Update _profil SET first_name = ?, waga = ?, wzrost = ?,drunked_water = ? where data=?;", new String[]{first_name, Waga, Wzrost, drunked_water, "-1"});
-        } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
+        } catch (Exception e)
         {
             utils.show_debug_message("write_survey_data", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
@@ -310,7 +307,7 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String create_new_snapschot() {
+    public static String createNewSnapschot() {
         utils.show_debug_message("create_new_snapschot", "Zaczynam");
         Cursor c = null;
         try {
@@ -333,7 +330,7 @@ class WebAppInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public static String get_resources(String tabela, String row) {
+    public static String getResources(String tabela, String row) {
         utils.show_debug_message("get_resources", "Zaczynam");
         utils.show_debug_message("get_resources", "tabela " + tabela + " row " + row);
         Cursor c = null;
@@ -353,10 +350,10 @@ class WebAppInterface {
      *
      * @param message           String message about error
      * @param additionalmessage String user friendly message about error
-     * @return String Json operation status (witch error)
+     * @return nothing
      */
     @JavascriptInterface
-    public void thrownewexception(String message, String additionalmessage) {
+    public void throwNewException(String message, String additionalmessage) {
         utils.show_debug_message("thrownewexception", "zaczynam");
         utils.show_debug_message("thrownewexception", "message " + message + " addmsg " + additionalmessage);
         Intent err = new Intent(mContext, Main3Activity.class);
@@ -373,7 +370,7 @@ class WebAppInterface {
      *
      * @param tag     String tag of message
      * @param message String message
-     * @return String Json operation status (witch error)
+     * @return nothing
      */
     @JavascriptInterface
     public void log(String tag, String message) {
