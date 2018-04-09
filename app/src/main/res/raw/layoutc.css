@@ -1,5 +1,7 @@
 @import url("https://fonts.googleapis.com/css?family=Lato:100,200,300,400,700");
 @import url("https://fonts.googleapis.com/css?family=Raleway:100,200,300,400,700");
+#app,
+body,
 html {
   height: 100%;
 }
@@ -385,23 +387,40 @@ input[type=number]::-webkit-outer-spin-button {
   height: 1em;
 }
 .slide {
-  height: calc(100vh - 64px);
-  width: 100vw;
+  height: 100%;
+  width: 100%;
   font-size: 30px;
   font-weight: 300;
   font-family: Raleway;
   color: #666;
   overflow: auto;
-  touch-action: pan-y !important;
+}
+.slides {
+  height: 100%;
+  display: -webkit-box;
+  display: -moz-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: box;
+  display: flex;
+  -webkit-box-direction: reverse;
+  -moz-box-direction: reverse;
+  -o-box-direction: reverse;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -o-box-orient: vertical;
+  -webkit-flex-flow: column-reverse;
+  -ms-flex-flow: column-reverse;
+  flex-flow: column-reverse;
 }
 .slides > .menu {
-  position: fixed;
-  bottom: 0;
   height: 64px;
-  width: 100vw;
+  width: 100%;
+  z-index: 1;
 }
 .slides > .menu .row {
-  border-top: 2px solid #0af;
+  -webkit-box-shadow: 0 -2px 0 #0af;
+  box-shadow: 0 -2px 0 #0af;
 }
 .slides > .menu .col .v-touch-ripple {
   height: 64px;
@@ -491,6 +510,7 @@ input[type=number]::-webkit-outer-spin-button {
   width: 100%;
   position: absolute;
   bottom: -1px;
+  left: 0;
 }
 .profile h1 {
   text-align: center;

@@ -2,6 +2,7 @@
 <html>
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+    <meta charset="utf-8">
     <script src="https://cdn.rawgit.com/wvffle/waff-query/7fcbc5b9/dist/waff-query.js"></script>
     <script src="https://unpkg.com/vue"></script>
     <script src="https://unpkg.com/vue-router"></script>
@@ -11,14 +12,10 @@
     <link href="https://unpkg.com/vue-touch-ripple/dist/vue-touch-ripple.css" rel="stylesheet">
     <link href="https://unpkg.com/flickity@2.1.0/dist/flickity.css" rel="stylesheet">
     <link href="https://unpkg.com/reset.css" rel="stylesheet">
-    <link href="layoutc.css" rel="stylesheet">
+    <link href="./layoutc.css" rel="stylesheet">
+    <link href="./layoutc.css" rel="stylesheet">
   </head>
   <body>
-    <div id="app">
-      <transition name="tname">
-        <router-view :questions="questions" :sections="sections"></router-view>
-      </transition>
-    </div>
     <template id="slide-view-template">
       <div class="slides">
         <div class="slide">
@@ -168,6 +165,11 @@
     <template id="answer-template">
       <touch-ripple class="answer">{{ answer }}</touch-ripple>
     </template>
+    <div id="app">
+      <transition name="tname">
+        <router-view :questions="questions" :sections="sections"></router-view>
+      </transition>
+    </div>
     <script src="layouts.js"></script>
   </body>
 </html>

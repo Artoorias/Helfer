@@ -14,7 +14,7 @@ import java.io.Serializable;
  * Created by Tomek on 08.02.2018.
  */
 
-class WebAppInterface {
+class WebAppInterface implements jsInterface {
     public static SQLiteDatabase sql;
     Context mContext;
 
@@ -23,26 +23,9 @@ class WebAppInterface {
         sql = sqla;
     }
 
-
-    /**
-     * Get information from
-     *
-     * @param req value of request
-     *            req = 1 get_all_dish
-     *            req = 2 get_all_sport
-     *            req = 3 get_all_artykoly (tak niewiem jak jest po angielsku)
-     *            req = 4 get_all_maps_position
-     *            req = 5 get_all_slogans
-     *            req = 6 get_default_filtred_dish
-     *            req = 7 get_default_filtred_artykoly
-     *            req = 8 get_default_filtred_sport
-     *            req = 9 get_custom_filtred_dish option_1=Przeciwskazania option_2=Wegetarianizm option_3=Weganizm
-     *            req = 10 get_custom_filtred_artukoly option_1=Grupa Wiekowa
-     *            req = 11 get_custom_filtred_sport option_1=Przeciwskazania
-     * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
-     */
+    @NonNull
     @JavascriptInterface
-    public static String getData(@NonNull int req) {
+    public String getData(@NonNull int req) {
         utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
@@ -78,8 +61,9 @@ class WebAppInterface {
         }
     }
 
+    @NonNull
     @JavascriptInterface
-    public static String getData(@NonNull int req, @NonNull String option_1) {
+    public String getData(@NonNull int req, @NonNull String option_1) {
         utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
@@ -103,8 +87,9 @@ class WebAppInterface {
         }
     }
 
+    @NonNull
     @JavascriptInterface
-    public static String getData(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3) {
+    public String getData(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3) {
         utils.show_debug_message("get_Data", "Rozpoczynam");
         Cursor c = null;
         try {
@@ -126,15 +111,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * Add new ro to _Ankieta table
-     *
-     * @param key   key column value
-     * @param value value column value
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String writeSurveyData(@NonNull String key, @NonNull String value) {
+    public String writeSurveyData(@NonNull String key, @NonNull String value) {
         utils.show_debug_message("write_Survey_Data", "Rozpoczynam, key: " + key + " value: " + value);
         try {
             sql.execSQL("INSERT INTO _Ankieta (" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + "," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + ") VALUES (?,?);", new String[]{key, value});
@@ -148,16 +127,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * Update _Ankieta table
-     *
-     * @param id    identyfier of database row
-     * @param key   key column value
-     * @param value value column value
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String updateSurveyData(@NonNull Integer id, @NonNull String key, @NonNull String value) {
+    public String updateSurveyData(@NonNull Integer id, @NonNull String key, @NonNull String value) {
         utils.show_debug_message("update_Survey_Data", "Rozpoczynam id = " + id + " key = " + key + " value = " + value);
         try {
             sql.execSQL("UPDATE _Ankieta SET" + String.valueOf((char) 34) + "Pytanie" + String.valueOf((char) 34) + " = ? ," + String.valueOf((char) 34) + "Odpowiedz" + String.valueOf((char) 34) + " = ? WHERE id = " + id.toString() + ";", new String[]{key, value});
@@ -171,14 +143,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * Get row form table _Ankieta by id
-     *
-     * @param id Id value
-     * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
-     */
+    @NonNull
     @JavascriptInterface
-    public static String getSurveyInfoById(@NonNull Integer id) {
+    public String getSurveyInfoById(@NonNull Integer id) {
         utils.show_debug_message("get_Survey_Info_By_Id", "Rozpoczynam id = " + id);
         Cursor c = null;
         try {
@@ -193,13 +160,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * Get all rows form table _Ankieta by id
-     *
-     * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
-     */
+    @NonNull
     @JavascriptInterface
-    public static String getSurveyInfoAll() {
+    public String getSurveyInfoAll() {
         utils.show_debug_message("get_Survey_Info_All", "Zaczynam");
         Cursor c = null;
         try {
@@ -214,13 +177,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * Clear and optymalize database
-     *
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String clear() {
+    public String clear() {
         utils.show_debug_message("wyczysc", "Rozpoczynam");
         try {
             sql.execSQL("VACUUM;", null);
@@ -233,13 +192,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * Get all Profile data
-     *
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String profileGetData() {
+    public String profileGetData() {
         utils.show_debug_message("profile_Get_Data", "Zaczynam");
         Cursor c = null;
         try {
@@ -254,13 +209,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * get lastest profile data
-     *
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String profileGetLastestData() {
+    public String profileGetLastestData() {
         utils.show_debug_message("profile_Get_Lastest_Da", "Zaczynam");
         Cursor c = null;
         try {
@@ -275,17 +226,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * update lastest profile data
-     *
-     * @param first_name String
-     * @param first_name waga
-     * @param first_name wzrost
-     * @param first_name drunked_water
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String profileLastestUpdate(@NonNull String first_name, @NonNull String Waga, @NonNull String Wzrost, @NonNull String drunked_water) {
+    public String profileLastestUpdate(@NonNull String first_name, @NonNull String Waga, @NonNull String Wzrost, @NonNull String drunked_water) {
         utils.show_debug_message("profile_lastest_update", "Zaczynam");
         utils.show_debug_message("profile_lastest_update", "first_name = " + first_name + " Waga = " + Waga + " Wzrost = " + Wzrost + "wypita woda = " + drunked_water);
         Cursor c = null;
@@ -301,13 +244,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * create snapschot form lastest profile state
-     *
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String createNewSnapschot() {
+    public String createNewSnapschot() {
         utils.show_debug_message("create_new_snapschot", "Zaczynam");
         Cursor c = null;
         try {
@@ -322,15 +261,9 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * get resource file
-     *
-     * @param tabela String name of table
-     * @param row    String witch id of row in tabela
-     * @return String Json operation status (witch error)
-     */
+    @NonNull
     @JavascriptInterface
-    public static String getResources(String tabela, String row) {
+    public String getResources(String tabela, String row) {
         utils.show_debug_message("get_resources", "Zaczynam");
         utils.show_debug_message("get_resources", "tabela " + tabela + " row " + row);
         Cursor c = null;
@@ -345,13 +278,6 @@ class WebAppInterface {
         }
     }
 
-    /**
-     * send exception to Helfer Error handler
-     *
-     * @param message           String message about error
-     * @param additionalmessage String user friendly message about error
-     * @return nothing
-     */
     @JavascriptInterface
     public void throwNewException(String message, String additionalmessage) {
         utils.show_debug_message("thrownewexception", "zaczynam");
@@ -365,13 +291,6 @@ class WebAppInterface {
         return;
     }
 
-    /**
-     * Log
-     *
-     * @param tag     String tag of message
-     * @param message String message
-     * @return nothing
-     */
     @JavascriptInterface
     public void log(String tag, String message) {
         utils.show_debug_message(tag, message);

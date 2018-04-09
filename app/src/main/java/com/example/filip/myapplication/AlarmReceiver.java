@@ -47,7 +47,9 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         /*final View view = View.inflate(context.getApplicationContext(),R.layout.activity_main, null);
         manager.addView(view, layoutParams);*/
-
+        final String nazwa = "Pij wode";
+        final String zawartosc = "Pij wode";
+        final String ticker = "HELFER";
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             NotificationManager notificationManager =
@@ -56,11 +58,11 @@ public class AlarmReceiver extends BroadcastReceiver{
                 new NotificationCompat.Builder(context,"woda")
                         .setSmallIcon(R.drawable.icon)
                         .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.woda_ico))
-                        .setContentTitle("Pij wode")
+                        .setContentTitle(nazwa)
                         .setPriority(NotificationManager.IMPORTANCE_MAX)
                         .setDefaults(Notification.DEFAULT_ALL)
-                        .setContentText("Pij wode")
-                        .setTicker("HELFER")
+                        .setContentText(zawartosc)
+                        .setTicker(ticker)
                         .setAutoCancel(true);
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             mBuilder.setSound(alarmSound);

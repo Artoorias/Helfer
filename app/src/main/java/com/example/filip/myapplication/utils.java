@@ -33,6 +33,11 @@ public class utils {
     private static SharedPreferences sharedPref;
     private static SharedPreferences.Editor editor;
 
+    public static boolean dbupate(SQLiteDatabase target, SQLiteDatabase source)throws Exception{
+    //TODO
+    return true;
+    }
+
     public static String cursorToString(@NonNull Cursor crs) {
         JSONArray arr = new JSONArray();
         crs.moveToFirst();
@@ -133,7 +138,6 @@ public class utils {
                 show_debug_message("check_db_updates", "Baza ni działa");
                 MainActivity.em = "Baza ni działa";
                 throw e;
-                //SystMainActivity.em.exit(0);
             }
             if (config.debug == true) {
                 Log.d("check_db_updates", "Baza działa");
@@ -185,6 +189,10 @@ public class utils {
                 String wer = db_ver.getString(0);
                 if (!wer.equals(versja)) {
                     show_debug_message("check_db_updates", "versja bazy danych nie jest aktualne (był update)");
+                    if(!utils.dbupate(MainActivity.sql, sqtmp)){
+                        MainActivity.em="Brak dodatkowych informacji";
+                        throw new Exception("błąd w trakcie aktualizacji bazy danych");
+                    }
                     MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + wer + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";");
                     editor.putString(DB_VERSION_KEY, wer);
                 } else {
