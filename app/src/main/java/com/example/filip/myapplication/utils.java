@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.util.Base64;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -51,7 +52,7 @@ public class utils {
                     try {
                         switch (crs.getType(i)) {
                             case Cursor.FIELD_TYPE_BLOB:
-                                row.put(colName, crs.getBlob(i).toString());
+                                row.put(colName, Base64.encodeToString(crs.getBlob(i), Base64.NO_WRAP));
                                 break;
                             case Cursor.FIELD_TYPE_FLOAT:
                                 row.put(colName, crs.getDouble(i));

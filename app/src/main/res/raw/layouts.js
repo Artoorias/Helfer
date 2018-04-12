@@ -1,4 +1,6 @@
-﻿Vue.use(VueRouter);
+﻿console.clear();
+
+Vue.use(VueRouter);
 
 // Ripple effect for buttons
 Vue.use(VueTouchRipple, {
@@ -85,10 +87,11 @@ Vue.component('icon', {
 // temp
 if (typeof Android === 'undefined') {
   window.Android = {
-    getData: function getData(_) {
-      return {
-        isSurveyFilled: true
-      };
+    getData: function getData() {
+      return '{ "success": false }';
+    },
+    getResources: function getResources() {
+      return '{ "success": false }';
     },
     writeSurveyData: function writeSurveyData() {}
   };
@@ -180,8 +183,22 @@ Vue.component('menu-view', {
   template: '#menu-template'
 });
 
-var articleData = JSON.parse(Android.getData(3));
-var articles = articleData.success === true ? articleData.data : [];
+var getArticles = function getArticles(_) {
+  var data = JSON.parse(Android.getData(3));
+
+  if (data.success === false) return [{
+    'Tytuł': 'wvffle',
+    Link: 'https://wvffle.net'
+  }];
+
+  return data.data.map(function (a) {
+    var image = JSON.parse(Android.getResources(0, a.id));
+    if (image.success === false) return a;
+    a.image = 'data:' + image.data[0].typ + ';base64,' + image.data[0].zawartosc;
+
+    return a;
+  });
+};
 
 // TODO: dodac grupe wiekowa
 
@@ -189,7 +206,7 @@ Vue.component('dashboard-view', {
   template: '#dashboard-template',
   data: function data() {
     return {
-      articles: articles
+      articles: getArticles()
     };
   }
 });
