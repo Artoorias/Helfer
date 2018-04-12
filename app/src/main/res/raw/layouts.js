@@ -83,13 +83,18 @@ Vue.component('icon', {
 });
 
 // temp
-var Android = { getData: function getData(_) {
-    return {
-      isSurveyFilled: true
-    };
-  } };
+if (typeof Android === 'undefined') {
+  window.Android = {
+    getData: function getData(_) {
+      return {
+        isSurveyFilled: true
+      };
+    },
+    writeSurveyData: function writeSurveyData() {}
+  };
+}
 
-var data = Android.getData();
+var data = { isSurveyFilled: true };
 
 // Root View
 var RootView = {
@@ -175,11 +180,16 @@ Vue.component('menu-view', {
   template: '#menu-template'
 });
 
+var articleData = JSON.parse(Android.getData(3));
+var articles = articleData.success === true ? articleData.data : [];
+
+// TODO: dodac grupe wiekowa
+
 Vue.component('dashboard-view', {
   template: '#dashboard-template',
   data: function data() {
     return {
-      articles: [{ title: 'Lorem', date: '24.03.2018', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }, { title: 'Lorem', date: '12.02.1410', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }, { title: 'Lorem', date: '03.11.1666', content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.' }]
+      articles: articles
     };
   }
 });

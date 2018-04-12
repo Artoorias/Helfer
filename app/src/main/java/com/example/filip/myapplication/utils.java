@@ -133,7 +133,7 @@ public class utils {
             show_debug_message("check_db_updates", "Sprawdzam czy baza działa");
             try {
                 MainActivity.sql = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE);
-                Cursor c = MainActivity.sql.rawQuery("SELECT Dish from Przepisy_do_aplikacji_Erasmus;", null);
+                Cursor c = MainActivity.sql.rawQuery("SELECT * from artykoly;", null);
             } catch (Exception e) {
                 show_debug_message("check_db_updates", "Baza ni działa");
                 MainActivity.em = "Baza ni działa";
@@ -187,7 +187,9 @@ public class utils {
                 db_ver = sqtmp.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";", null);
                 db_ver.moveToFirst();
                 String wer = db_ver.getString(0);
-                if (!wer.equals(versja)) {
+                final Cursor tmp = MainActivity.sql.rawQuery("Select wartosc from _conf;", null);
+                tmp.moveToFirst();
+                if (!wer.equals(tmp.getString(0))) {
                     show_debug_message("check_db_updates", "versja bazy danych nie jest aktualne (był update)");
                     if(!utils.dbupate(MainActivity.sql, sqtmp)){
                         MainActivity.em="Brak dodatkowych informacji";
@@ -222,6 +224,13 @@ public class utils {
                     CharSequence name = "woda";
                     String description = "powiadomienia o picu wody";
                     NotificationChannel channel = new NotificationChannel("woda", name, NotificationManager.IMPORTANCE_HIGH);
+                    channel.setDescription(description);
+                    channel.setLightColor(Color.BLUE);
+                    channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
+                    notificationManager.createNotificationChannel(channel);
+                     name = "kanapka";
+                     description = "powiadomienia o braniu kanapek";
+                     channel = new NotificationChannel("kanapka", name, NotificationManager.IMPORTANCE_HIGH);
                     channel.setDescription(description);
                     channel.setLightColor(Color.BLUE);
                     channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);

@@ -12,8 +12,7 @@
     <link href="https://unpkg.com/vue-touch-ripple/dist/vue-touch-ripple.css" rel="stylesheet">
     <link href="https://unpkg.com/flickity@2.1.0/dist/flickity.css" rel="stylesheet">
     <link href="https://unpkg.com/reset.css" rel="stylesheet">
-    <link href="./layoutc.css" rel="stylesheet">
-    <link href="./layoutc.css" rel="stylesheet">
+    <link href="layoutc.css" rel="stylesheet">
   </head>
   <body>
     <template id="slide-view-template">
@@ -108,10 +107,9 @@
       <div class="dashboard">
         <div class="article" v-for="(article, i) in articles">
           <div class="header">
-            <div class="title">{{ article.title }}</div>
-            <div class="date">{{ article.date }}</div>
+            <div class="title">{{ article['Tytuł'] }}</div>
           </div>
-          <div class="content">{{ article.content }}</div>
+          <div class="content"><a :href="article.Link">{{ article.Link }}</a></div>
         </div>
       </div>
     </template>

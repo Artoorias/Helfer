@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 
 import java.util.Calendar;
 
@@ -22,7 +23,7 @@ public class Boot extends BroadcastReceiver {
         Intent it = new Intent(context.getApplicationContext(), AlarmReceiver.class);
         Calendar calendar = Calendar.getInstance();
         utils.show_debug_message("BOOT", "woda_1 prepare");
-        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), InitRunable.WODA_1, it, 0);
+        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.WODA_1, it, 0);
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 17);
         calendar.set(Calendar.MINUTE, 30);
@@ -35,7 +36,7 @@ public class Boot extends BroadcastReceiver {
                 AlarmManager.INTERVAL_DAY, alarmIntent);
 
         utils.show_debug_message("BOOT", "woda_2 prepare");
-        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), InitRunable.WODA_2, it, 0);
+        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.WODA_2, it, 0);
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 7);

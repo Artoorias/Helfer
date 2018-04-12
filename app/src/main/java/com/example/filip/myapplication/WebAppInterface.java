@@ -23,6 +23,14 @@ class WebAppInterface implements jsInterface {
         sql = sqla;
     }
 
+    private String returnData(String data) {
+        return returnData(data);
+    }
+
+    private String returnError(String error) {
+        return "{ \"success\": false, \"" + error + "\" }";
+    }
+
     @NonNull
     @JavascriptInterface
     public String getData(@NonNull int req) {
@@ -50,15 +58,15 @@ class WebAppInterface implements jsInterface {
                     c = sql.rawQuery("SELECT * from gra_terenowa;", null);
                     break;
                 default:
-                    return "{ success: false, error: 'unknown request' }";
+                    return "{ \"success\": false, \"error\": \"Unknown request\" }";
             }
         } catch (Exception e) {
             utils.show_debug_message("get_Data", e.getMessage());
-            return "{ success: false, error: '" + e.getMessage() + "' }";
-        } finally {
-            utils.show_debug_message("get_Data", utils.cursorToString(c));
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
+            return "{ \"success\": false, \"error\": \"" + e.getMessage()+ "\" }";
         }
+        String tmp = utils.cursorToString(c);
+        utils.show_debug_message("get_Data",tmp );
+        return returnData(tmp);
     }
 
     @NonNull
@@ -76,15 +84,15 @@ class WebAppInterface implements jsInterface {
                     c = sql.rawQuery("SELECT * from sport; where przeciwskazania = ?", new String[]{option_1});
                     break;
                 default:
-                    return "{ success: false, error: 'unknown request' }";
+                    return "{ \"success\": false, \"error\": \"unknown request\" }";
             }
         } catch (Exception e) {
             utils.show_debug_message("get_Data", e.getMessage());
-            return "{ success: false, error: '" + e.getMessage() + "' }";
-        } finally {
-            utils.show_debug_message("get_Data", utils.cursorToString(c));
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
+            return "{ \"success\": false, \"error\": \"" + e.getMessage()+String.valueOf((char)34) + " }";
         }
+        String tmp = utils.cursorToString(c);
+        utils.show_debug_message("get_Data",tmp );
+        return returnData(tmp);
     }
 
     @NonNull
@@ -99,16 +107,15 @@ class WebAppInterface implements jsInterface {
                     c = sql.rawQuery("SELECT * from zywienie where przeciwskazania = ? and wegetarianizm = ? and weganizm = ?;", new String[]{option_1, option_2, option_3});
                     break;
                 default:
-                    return "{ success: false, error: 'unknown request' }";
+                    return "{ \"success\": false, \"error\": \"unknown request\" }";
             }
-        } catch (Exception e)
-        {
+        } catch (Exception e) {
             utils.show_debug_message("get_Data", e.getMessage());
-            return "{ success: false, error: '" + e.getMessage() + "' }";
-        } finally {
-            utils.show_debug_message("get_Data", utils.cursorToString(c));
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
+            return "{ \"success\": false, \"error\": \"" + e.getMessage()+String.valueOf((char)34) + " }";
         }
+        String tmp = utils.cursorToString(c);
+        utils.show_debug_message("get_Data",tmp );
+        return returnData(tmp);
     }
 
     @NonNull
@@ -121,10 +128,10 @@ class WebAppInterface implements jsInterface {
         {
             utils.show_debug_message("write_Survey_Data", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
-        } finally {
-            utils.show_debug_message("write_Survey_Data", "ok");
-            return "{ success: true}";
         }
+            utils.show_debug_message("write_Survey_Data", "ok");
+            return returnData("");
+
     }
 
     @NonNull
@@ -137,10 +144,10 @@ class WebAppInterface implements jsInterface {
         {
             utils.show_debug_message("update_Survey_Data", "Błąd " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
-        } finally {
-            utils.show_debug_message("update_Survey_Data", "OK");
-            return "{ success: true}";
         }
+            utils.show_debug_message("update_Survey_Data", "OK");
+            return returnData("");
+
     }
 
     @NonNull
@@ -154,10 +161,10 @@ class WebAppInterface implements jsInterface {
         {
             utils.show_debug_message("get_Survey_Info_By_Id", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }"; //:)
-        } finally {
-            utils.show_debug_message("get_Survey_Info_By_Id", "OK");
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
+            utils.show_debug_message("get_Survey_Info_By_Id", "OK");
+            return returnData(utils.cursorToString(c));
+
     }
 
     @NonNull
@@ -171,10 +178,10 @@ class WebAppInterface implements jsInterface {
         {
             utils.show_debug_message("get_Survey_Info_All", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
-        } finally {
-            utils.show_debug_message("get_Survey_Info_All", "OK");
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
+            utils.show_debug_message("get_Survey_Info_All", "OK");
+            return returnData(utils.cursorToString(c));
+
     }
 
     @NonNull
@@ -186,10 +193,9 @@ class WebAppInterface implements jsInterface {
         } catch (Exception e) {
             utils.show_debug_message("wyczysc", "Błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "'}";
-        } finally {
-            utils.show_debug_message("wyczysc", "OK");
-            return "{ success: true}";
         }
+            utils.show_debug_message("wyczysc", "OK");
+            return returnData("");
     }
 
     @NonNull
@@ -203,10 +209,10 @@ class WebAppInterface implements jsInterface {
         {
             utils.show_debug_message("profile_Get_Data", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
-        } finally {
-            utils.show_debug_message("profile_Get_Data", "OK");
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
         }
+            utils.show_debug_message("profile_Get_Data", "OK");
+            return returnData(utils.cursorToString(c));
+
     }
 
     @NonNull
@@ -219,11 +225,11 @@ class WebAppInterface implements jsInterface {
         } catch (Exception e) {
             utils.show_debug_message("profile_Get_Lastest_Da", "błąd: " + e.getMessage());
             return "{ success: false, error: '" + e.getMessage() + "' }";
-        } finally {
+        }
             utils.show_debug_message("profile_Get_Lastest_Da", "OK");
 
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
-        }
+            return returnData(utils.cursorToString(c));
+
     }
 
     @NonNull
@@ -238,10 +244,10 @@ class WebAppInterface implements jsInterface {
         {
             utils.show_debug_message("write_survey_data", "błąd: " + e.getMessage());
             return "{ success: false, error:'" + e.getMessage() + "'}";
-        } finally {
-            utils.show_debug_message("write_survey_data", "ok");
-            return "{ success: true}";
         }
+            utils.show_debug_message("write_survey_data", "ok");
+            return returnData("");
+
     }
 
     @NonNull
@@ -254,28 +260,42 @@ class WebAppInterface implements jsInterface {
         } catch (Exception e) // (Exception e) catch-all:s are bad mmkay.
         {
             utils.show_debug_message("create_new_snapschot", "błąd: " + e.getMessage());
-            return "{ success: false, error:'" + e.getMessage() + "'}";
-        } finally {
-            utils.show_debug_message("create_new_snapschot", "ok");
-            return "{ success: true}";
+            return "{ \"success\": false, \"error\": \"" + e.getMessage() + "\" }";
         }
+            utils.show_debug_message("create_new_snapschot", "ok");
+            return returnData("");
+
     }
 
     @NonNull
     @JavascriptInterface
-    public String getResources(String tabela, String row) {
+    public String getResources(int req, String row) {
         utils.show_debug_message("get_resources", "Zaczynam");
+        String tabela ="";
+        switch (req){
+            case 0:
+                tabela ="artykoly";
+                break;
+            case 1:
+                tabela="artykoly";
+                break;
+            case 2:
+                tabela="gra_terenowa";
+                break;
+                default:
+                    return "{ \"success\": false, \"error\": \"Unknown request\" }";
+        }
         utils.show_debug_message("get_resources", "tabela " + tabela + " row " + row);
         Cursor c = null;
         try {
             c = sql.rawQuery("Select * from zalaczniki where tabela = ? and row = ?", new String[]{tabela, row});
         } catch (Exception e) {
             utils.show_debug_message("get_resources", "błąd: " + e.getMessage());
-            return "{ success: false, error:'" + e.getMessage() + "'}";
-        } finally {
-            utils.show_debug_message("get_resources", "ok");
-            return "{ success: true, data: " + utils.cursorToString(c) + "}";
+            return "{ \"success\": false, \"error\":'" + e.getMessage() + "'}";
         }
+            utils.show_debug_message("get_resources", "ok");
+            return returnData(utils.cursorToString(c));
+
     }
 
     @JavascriptInterface

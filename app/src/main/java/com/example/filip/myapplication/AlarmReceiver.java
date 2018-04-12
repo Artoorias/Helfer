@@ -9,6 +9,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.media.RingtoneManager;
@@ -47,17 +48,33 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         /*final View view = View.inflate(context.getApplicationContext(),R.layout.activity_main, null);
         manager.addView(view, layoutParams);*/
-        final String nazwa = "Pij wode";
-        final String zawartosc = "Pij wode";
-        final String ticker = "HELFER";
+String nazwa = "";
+String zawartosc="";
+String ticker = "";
+        Bitmap li = null;
+        String chan="";
+        int a = intent.getIntExtra("id",0);
+        if (intent.getIntExtra("id",0)==config.WODA_1||intent.getIntExtra("id",0)==config.WODA_2){
+            nazwa = config.nazwa_w;
+            zawartosc = config.zawartosc_w;
+            ticker = config.ticker_w;
+            li = BitmapFactory.decodeResource(context.getResources(), R.drawable.woda_ico);
+            chan="woda";
+        }else{
+            nazwa = config.nazwa_k;
+            zawartosc = config.zawartosc_k;
+            ticker = config.ticker_k;
+            li = BitmapFactory.decodeResource(context.getResources(), R.drawable.kanapka);
+            chan ="kanapka";
+        }
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
         {
             NotificationManager notificationManager =
                 (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context,"woda")
+                new NotificationCompat.Builder(context,chan)
                         .setSmallIcon(R.drawable.icon)
-                        .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.woda_ico))
+                        .setLargeIcon(li)
                         .setContentTitle(nazwa)
                         .setPriority(NotificationManager.IMPORTANCE_MAX)
                         .setDefaults(Notification.DEFAULT_ALL)
@@ -69,17 +86,17 @@ public class AlarmReceiver extends BroadcastReceiver{
             mBuilder.setLights(Color.BLUE, 500, 500);
             long[] pattern = {500,500,500,500,500,500,500,500,500};
             mBuilder.setVibrate(pattern);
-            notificationManager.notify(0, mBuilder.build());
+            notificationManager.notify(a, mBuilder.build());
         }else{
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.drawable.icon)
-                            .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.drawable.woda_ico))
-                            .setContentTitle("Pij wode")
+                            .setLargeIcon(li)
+                            .setContentTitle(nazwa)
                             .setPriority(Notification.PRIORITY_MAX)
                             .setDefaults(Notification.DEFAULT_ALL)
-                            .setContentText("Pij wode")
-                            .setTicker("HELFER")
+                            .setContentText(zawartosc)
+                            .setTicker(ticker)
                             .setWhen(0)
                             .setAutoCancel(true);;
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
@@ -90,7 +107,7 @@ public class AlarmReceiver extends BroadcastReceiver{
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
-                notificationManager.notify(0, mBuilder.build());
+                notificationManager.notify(a, mBuilder.build());
 
         }
 

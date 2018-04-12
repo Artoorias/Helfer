@@ -23,9 +23,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 
 public class InitRunable implements Runnable {
-    protected final static int WODA_1 = 0;
-    protected final static int WODA_2 = 1;
-    protected final static int KANAPKA = 2;
+
     static Context cnt;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
@@ -51,11 +49,12 @@ public class InitRunable implements Runnable {
                     SensorManager.SENSOR_DELAY_GAME);
             alarmMgr = (AlarmManager) cnt.getSystemService(cnt.ALARM_SERVICE);
             Intent it = new Intent(cnt.getApplicationContext(), AlarmReceiver.class);
-            alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), WODA_1, it, PendingIntent.FLAG_NO_CREATE);
+            it.putExtra("id",config.WODA_1);
+            alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), config.WODA_1, it, PendingIntent.FLAG_NO_CREATE);
             Calendar calendar = Calendar.getInstance();
             if (alarmIntent == null) {
                 utils.show_debug_message("Thread", "woda_1 prepare");
-                alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), WODA_1, it, 0);
+                alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), config.WODA_1, it, 0);
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.set(Calendar.HOUR_OF_DAY, 17);
                 calendar.set(Calendar.MINUTE, 30);
@@ -67,13 +66,31 @@ public class InitRunable implements Runnable {
                 alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
                         AlarmManager.INTERVAL_DAY, alarmIntent);
             }
-            alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), WODA_2, it, PendingIntent.FLAG_NO_CREATE);
+            it.putExtra("id",config.WODA_2);
+            alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), config.WODA_2, it, PendingIntent.FLAG_NO_CREATE);
             if (alarmIntent == null) {
                 utils.show_debug_message("Thread", "woda_2 prepare");
-                alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), WODA_2, it, 0);
+                alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), config.WODA_2, it, 0);
                 calendar = Calendar.getInstance();
                 calendar.setTimeInMillis(System.currentTimeMillis());
                 calendar.set(Calendar.HOUR_OF_DAY, 7);
+                calendar.set(Calendar.MINUTE, 30);
+                calendar.set(Calendar.SECOND, 0);
+                calendar.set(Calendar.MILLISECOND, 0);
+                if (calendar.getTimeInMillis() < System.currentTimeMillis()) {
+                    calendar.add(Calendar.DATE, 1);
+                }
+                alarmMgr.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
+                        AlarmManager.INTERVAL_DAY, alarmIntent);
+            }
+            it.putExtra("id",config.KANAPKA);
+            alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), config.KANAPKA, it, PendingIntent.FLAG_NO_CREATE);
+            if (alarmIntent == null) {
+                utils.show_debug_message("Thread", "KANAPKA prepare");
+                alarmIntent = PendingIntent.getBroadcast(cnt.getApplicationContext(), config.KANAPKA, it, 0);
+                calendar = Calendar.getInstance();
+                calendar.setTimeInMillis(System.currentTimeMillis());
+                calendar.set(Calendar.HOUR_OF_DAY, 19);
                 calendar.set(Calendar.MINUTE, 30);
                 calendar.set(Calendar.SECOND, 0);
                 calendar.set(Calendar.MILLISECOND, 0);
