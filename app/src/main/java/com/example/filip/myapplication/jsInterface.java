@@ -117,7 +117,7 @@ interface jsInterface {
      *
      * @param req int witch id of request
      *            0 = artykoly
-     *            1 = artykoly
+     *            1 = zywienie
      *            2 = gra_terenowa
      * @param row    String witch id of row in tabela
      * @return String Json operation status (witch error)

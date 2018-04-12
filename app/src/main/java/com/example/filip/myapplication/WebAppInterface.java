@@ -277,7 +277,7 @@ class WebAppInterface implements jsInterface {
                 tabela ="artykoly";
                 break;
             case 1:
-                tabela="artykoly";
+                tabela="zywienie";
                 break;
             case 2:
                 tabela="gra_terenowa";
