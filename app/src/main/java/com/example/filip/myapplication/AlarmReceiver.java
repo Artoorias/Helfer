@@ -1,13 +1,9 @@
 package com.example.filip.myapplication;
 
-import android.app.AlertDialog;
 import android.app.Notification;
-import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -16,17 +12,12 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.NotificationManagerCompat;
-import android.view.Gravity;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.Toast;
 
 /**
  * Created by Tomek on 18.03.2018.
  */
 
-public class AlarmReceiver extends BroadcastReceiver{
+public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         // TODO Auto-generated method stub
@@ -48,46 +39,45 @@ public class AlarmReceiver extends BroadcastReceiver{
 
         /*final View view = View.inflate(context.getApplicationContext(),R.layout.activity_main, null);
         manager.addView(view, layoutParams);*/
-String nazwa = "";
-String zawartosc="";
-String ticker = "";
+        String nazwa = "";
+        String zawartosc = "";
+        String ticker = "";
         Bitmap li = null;
-        String chan="";
-        int a = intent.getIntExtra("id",0);
-        if (intent.getIntExtra("id",0)==config.WODA_1||intent.getIntExtra("id",0)==config.WODA_2){
+        String chan = "";
+        int a = intent.getIntExtra("id", 0);
+        if (intent.getIntExtra("id", 0) == config.WODA_1 || intent.getIntExtra("id", 0) == config.WODA_2) {
             nazwa = config.nazwa_w;
             zawartosc = config.zawartosc_w;
             ticker = config.ticker_w;
             li = BitmapFactory.decodeResource(context.getResources(), R.drawable.woda_ico);
-            chan="woda";
-        }else{
+            chan = "woda";
+        } else {
             nazwa = config.nazwa_k;
             zawartosc = config.zawartosc_k;
             ticker = config.ticker_k;
             li = BitmapFactory.decodeResource(context.getResources(), R.drawable.kanapka);
-            chan ="kanapka";
+            chan = "kanapka";
         }
-        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-        {
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationManager notificationManager =
-                (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
+                    (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(context,chan)
-                        .setSmallIcon(R.drawable.icon)
-                        .setLargeIcon(li)
-                        .setContentTitle(nazwa)
-                        .setPriority(NotificationManager.IMPORTANCE_MAX)
-                        .setDefaults(Notification.DEFAULT_ALL)
-                        .setContentText(zawartosc)
-                        .setTicker(ticker)
-                        .setAutoCancel(true);
+                    new NotificationCompat.Builder(context, chan)
+                            .setSmallIcon(R.drawable.icon)
+                            .setLargeIcon(li)
+                            .setContentTitle(nazwa)
+                            .setPriority(NotificationManager.IMPORTANCE_MAX)
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .setContentText(zawartosc)
+                            .setTicker(ticker)
+                            .setAutoCancel(true);
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             mBuilder.setSound(alarmSound);
             mBuilder.setLights(Color.BLUE, 500, 500);
-            long[] pattern = {500,500,500,500,500,500,500,500,500};
+            long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
             mBuilder.setVibrate(pattern);
             notificationManager.notify(a, mBuilder.build());
-        }else{
+        } else {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
                             .setSmallIcon(R.drawable.icon)
@@ -98,16 +88,17 @@ String ticker = "";
                             .setContentText(zawartosc)
                             .setTicker(ticker)
                             .setWhen(0)
-                            .setAutoCancel(true);;
+                            .setAutoCancel(true);
+            ;
             Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
             mBuilder.setSound(alarmSound);
             mBuilder.setLights(Color.BLUE, 500, 500);
-            long[] pattern = {500,500,500,500,500,500,500,500,500};
+            long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
             mBuilder.setVibrate(pattern);
             NotificationManager notificationManager =
                     (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
 
-                notificationManager.notify(a, mBuilder.build());
+            notificationManager.notify(a, mBuilder.build());
 
         }
 

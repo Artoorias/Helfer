@@ -2,13 +2,11 @@ package com.example.filip.myapplication;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.database.sqlite.SQLiteDatabase;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
+import android.hardware.SensorManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -25,9 +23,11 @@ public class MainActivity extends AppCompatActivity {
     static ProgressDialog dialog;
     static Handler mhandler;
     static String em = "";
+    static sl listener = null;
     android.support.v7.app.AlertDialog al;
     android.support.v7.app.AlertDialog.Builder alertDialog;
 
+    //on stop vacuum database
     protected void onStop() {
         if (config.debug == true) {
             Log.d("end", "Kończenie");
@@ -56,10 +56,16 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    //on close close database
     protected void onDestroy() {
+        if (listener != null) {
+            SensorManager sensorMgr = (SensorManager) getSystemService(SENSOR_SERVICE);
+            sensorMgr.unregisterListener(listener);
+        }
         if (config.debug == true) {
             Log.d("destroy", "Niszczenie");
         }
+        //if db open close
         if (sql != null) {
             if (sql.isOpen()) {
                 sql.close();
@@ -75,13 +81,6 @@ public class MainActivity extends AppCompatActivity {
         super.onDestroy();
     }
 
-
-    protected boolean check_net() throws Exception {
-        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo netInfo = cm.getActiveNetworkInfo();
-        return netInfo != null && netInfo.isConnectedOrConnecting();
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -92,8 +91,9 @@ public class MainActivity extends AppCompatActivity {
             getSupportActionBar().hide();
             dialog = new ProgressDialog(MainActivity.this);
             utils.show_debug_message("create", "Rozpoczynam");
-            utils.show_debug_message("create", "Progress dialog");
-            if (!check_net()) {
+            //if net is continue
+            if (!utils.check_net(getApplicationContext())) {
+                //no net
                 utils.show_debug_message("create", "Netu nima");
                 alertDialog = new android.support.v7.app.AlertDialog.Builder(this);
                 alertDialog.setTitle("Nie mamy netu");
@@ -124,13 +124,16 @@ public class MainActivity extends AppCompatActivity {
                         startActivityForResult(intent, 1);
                     }
                 });
+                //create task to checking net witch 5 s interval
                 new AsyncTask() {
                     @Override
                     protected Object doInBackground(Object[] objects) {
                         while (true) {
                             try {
-                                if (check_net()) {
+                                if (utils.check_net(getApplicationContext())) {
+                                    //is net => close
                                     al.cancel();
+                                    //run init thread
                                     new Thread(new InitRunable()).start();
                                     this.cancel(true);
                                     return null;
@@ -144,9 +147,11 @@ public class MainActivity extends AppCompatActivity {
                     }
                 }.execute();
             } else {
+                //run init thread
                 new Thread(new InitRunable()).start();
             }
         } catch (Exception e) {
+            // jak cos sie zchrzani wyswietl informacje
             Intent err = new Intent(getApplicationContext(), Main3Activity.class);
             err.putExtra("exception", (Serializable) e);
             err.putExtra("add_info", "Brak dodatkowych informacji");

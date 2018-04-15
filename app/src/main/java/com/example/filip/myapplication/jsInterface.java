@@ -38,7 +38,7 @@ interface jsInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public String writeSurveyData(@NonNull String key, @NonNull String value);
+    public String writeSurveyInfo(@NonNull String key, @NonNull String value);
 
     /**
      * Update _Ankieta table
@@ -49,7 +49,7 @@ interface jsInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public String updateSurveyData(@NonNull Integer id, @NonNull String key, @NonNull String value);
+    public String updateSurveyInfo(@NonNull int id, @NonNull String key, @NonNull String value);
 
     /**
      * Get row form table _Ankieta by id
@@ -123,7 +123,7 @@ interface jsInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public String getResources(int req, String row);
+    public String getResources(@NonNull int req,@NonNull String row);
 
     /**
      * send exception to Helfer Error handler
@@ -133,7 +133,7 @@ interface jsInterface {
      * @return nothing
      */
     @JavascriptInterface
-    public void throwNewException(String message, String additionalmessage);
+    public void throwNewException(@NonNull String message,@NonNull String additionalmessage);
 
     /**
      * Log
@@ -143,5 +143,22 @@ interface jsInterface {
      * @return nothing
      */
     @JavascriptInterface
-    public void log(String tag, String message);
+    public void log(@NonNull String tag, @NonNull String message);
+
+    /**
+     * Opens link in new context
+     *
+     * @param link webpage url
+     * @return boolean
+     */
+    @JavascriptInterface
+    public boolean openWebpage(@NonNull String link);
+
+    /**
+     * Clears survey info
+     *
+     * @return boolen with status
+     */
+    @JavascriptInterface
+    public boolean clearSurveyInfo();
 }

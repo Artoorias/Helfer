@@ -105,11 +105,11 @@
     </template>
     <template id="dashboard-template">
       <div class="dashboard">
-        <div class="article" v-for="(article, i) in articles">
+        <div class="article" @click="open(article.Link)" v-for="(article, i) in articles">
+          <div class="background" :style="{ backgroundImage: article.image === &quot;&quot; ? &quot;&quot; : `url(${article.image})` }"></div>
           <div class="header">
             <div class="title">{{ article['Tytuł'] }}</div>
           </div>
-          <div class="content"><a :href="article.Link">{{ article.Link }}</a></div>
         </div>
       </div>
     </template>
@@ -120,7 +120,7 @@
             <div class="circ">
               <icon emoji="🍕"></icon>
             </div>
-            <h1>Diet</h1>
+            <h1>Dishes</h1>
           </div>
           <div class="col">
             <div class="circ">

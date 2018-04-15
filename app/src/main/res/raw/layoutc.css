@@ -439,16 +439,29 @@ input[type=number]::-webkit-outer-spin-button {
   overflow: hidden;
   border-radius: 7px;
   margin: 47px;
-  background: rgba(0,0,0,0.07);
+  text-decoration: none;
+  display: block;
+  background: #000;
+}
+.dashboard .article .background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.7;
+  -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+  filter: alpha(opacity=70);
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  background-size: cover;
+  background-position: center;
 }
 .dashboard .article .header {
-  padding: 17px 17px 34px;
-  background: -webkit-linear-gradient(bottom right, #0af, #0099e6);
-  background: -moz-linear-gradient(bottom right, #0af, #0099e6);
-  background: -o-linear-gradient(bottom right, #0af, #0099e6);
-  background: -ms-linear-gradient(bottom right, #0af, #0099e6);
-  background: linear-gradient(to top left, #0af, #0099e6);
+  position: relative;
+  padding: 37px 17px;
   color: #fff;
+  text-shadow: 2px 2px 3px #000;
   display: -webkit-box;
   display: -moz-box;
   display: -webkit-flex;
@@ -468,16 +481,6 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-justify-content: space-between;
   justify-content: space-between;
   font-family: Lato;
-}
-.dashboard .article .header .date {
-  font-size: 0.5em;
-}
-.dashboard .article .content {
-  font-size: 0.5em;
-  margin: -17px 0 0;
-  padding: 14px 17px 17px;
-  border-radius: 17px 0 0 0;
-  background: #ededed;
 }
 .profile header {
   position: relative;

@@ -20,8 +20,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+//sensor listener to catch shaking
+
 public class sl implements SensorListener {
-    private static final int SHAKE_THRESHOLD = 3500;
     Context cnt;
     long lastUpdate = 0;
     float last_x = 0;
@@ -39,6 +40,7 @@ public class sl implements SensorListener {
     @Override
     public void onSensorChanged(int sensor, float[] values) {
         cn = am.getRunningTasks(1).get(0).topActivity;
+        //work only for my window
         if ("com.example.filip.myapplication.MainActivity".equals(cn.getClassName())) {
             if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
                 long curTime = System.currentTimeMillis();
@@ -52,7 +54,7 @@ public class sl implements SensorListener {
 
                     float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                    if (speed > SHAKE_THRESHOLD && !is_s) {
+                    if (speed > config.SHAKE_THRESHOLD && !is_s) {
                         utils.show_debug_message("sensor", "shake detected w/ speed: " + speed);
                         View view = ((Activity) cnt).getWindow().getDecorView();
                         view.setDrawingCacheEnabled(true);
@@ -84,6 +86,8 @@ public class sl implements SensorListener {
                             public void onClick(DialogInterface dialog, int which) {
                                 try {
                                     is_s = false;
+                                    //prepare screenshot
+                                    //must be in external storage, because externall app (like e-mail) can't have access to this picture
                                     File file = new File(cnt.getExternalCacheDir(), "logicchip.png");
                                     FileOutputStream fOut = null;
                                     fOut = new FileOutputStream(file);
