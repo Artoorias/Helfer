@@ -1,0 +1,23 @@
+doctype html
+html 
+  head
+    meta(name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui")
+    meta(charset='utf-8')
+    
+    script(src='https://cdn.rawgit.com/wvffle/waff-query/7fcbc5b9/dist/waff-query.js')
+    script(src='https://unpkg.com/vue')
+    script(src='https://unpkg.com/vue-router')
+    script(src='https://unpkg.com/vue-touch-ripple')
+    
+    link(href='https://unpkg.com/vue-touch-ripple/dist/vue-touch-ripple.css', rel='stylesheet')
+    link(href='https://unpkg.com/normalize.css', rel='stylesheet')
+    
+    link(href='assets/css/app.processed.css', rel='stylesheet')
+  body
+    include templates
+    
+    #app
+      router-view
+      .gray.center(style='padding: 27px 0') Proundly created by the students of ILO Bialystok
+    script(src='assets/js/app.processed.js')
+        

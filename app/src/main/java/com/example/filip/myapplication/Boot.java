@@ -17,11 +17,9 @@ public class Boot extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO Auto-generated method stub
         alarmMgr = (AlarmManager) context.getSystemService(context.ALARM_SERVICE);
         Intent it = new Intent(context.getApplicationContext(), AlarmReceiver.class);
         it.putExtra("id", config.WODA_1);
-        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.WODA_1, it, 0);
         Calendar calendar = Calendar.getInstance();
         alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.WODA_1, it, 0);
         calendar.setTimeInMillis(System.currentTimeMillis());
@@ -37,7 +35,6 @@ public class Boot extends BroadcastReceiver {
 
         it.putExtra("id", config.WODA_2);
         alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.WODA_2, it, 0);
-        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.WODA_2, it, 0);
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 7);
@@ -51,7 +48,6 @@ public class Boot extends BroadcastReceiver {
                 AlarmManager.INTERVAL_DAY, alarmIntent);
 
         it.putExtra("id", config.KANAPKA);
-        alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.KANAPKA, it, 0);
         alarmIntent = PendingIntent.getBroadcast(context.getApplicationContext(), config.KANAPKA, it, 0);
         calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());

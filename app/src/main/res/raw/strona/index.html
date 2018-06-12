@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, minimal-ui">
+  <meta charset="utf-8">
+  <script src="https://cdn.rawgit.com/wvffle/waff-query/7fcbc5b9/dist/waff-query.js"></script>
+  <script src="https://unpkg.com/vue"></script>
+  <script src="https://unpkg.com/vue-router"></script>
+  <script src="https://unpkg.com/vue-touch-ripple"></script>
+  <link href="https://unpkg.com/vue-touch-ripple/dist/vue-touch-ripple.css" rel="stylesheet">
+  <link href="https://unpkg.com/normalize.css" rel="stylesheet">
+  <link href="assets/css/app.processed.css" rel="stylesheet">
+</head>
+
+<body><template id="home"><div class="home"><h2>{{motd}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg><img src="https://i.imgur.com/G7zimv9.png"></h2><div class="buttons"><div class="button" v-for="view in views"><router-link :to="'/' + view[0]">{{ view[1] }}</router-link></div></div></div></template>
+  <template
+    id="about">
+    <div class="content">
+      <h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2>
+      <p>Young people living in the times of fast developing multimedia and technological progress are often not aware of the influence that modern technologies have on their health and well-being. </p>
+      <p>The presented project covers three areas: health and sport, nutrition, modern technologies and is aimed at students, aged 16-19, of 4 secondary schools, their teachers, members of their families and the local communities. There will be involved
+        96 students and 82 teachers, but there are also 5000 students, teachers, parents, members of local and global communities who will benefit from the project. The innovative aim is to raise awareness of the negative sides of unhealthy lifestyle
+        and to implement health-promoting attitudes among the participants by means of designing and using a mobile phone application. The students will design a pro-healthy city game, which will be played during exchange visits. The mobile phone application
+        is of long-term character since it will be used throughout the whole project and after its ending and its idea is to remind, inform and motivate all the participants regularly to lead healthy lifestyle. The free of charge app will be accessible
+        on the project website and in an online shop. The project is interdisciplinary and multi-faceted as it concerns IT, Biology, Chemistry, Foreign Languages and Physical Education.</p>
+      <p>The objectives are:
+        <ul>
+          <li>To develop pro-healthy lifestyle habits by introducing and implementing health-promoting attitudes;</li>
+          <li>To improve fitness of the participants in the time of the project by 10%;</li>
+          <li>To develop a habit of preparing and eating nutritious breakfast by 60% of the participants;</li>
+          <li>To broaden by 20% the knowledge concerning civilization diseases and their relation with nutrition and unhealthy lifestyle; </li>
+          <li>To improve basic programming skills needed for designing the application. </li>
+        </ul>
+      </p>
+      <p>During the project the participants will learn basic programming skills, ways of searching information on the Internet and checking its credibility, making presentations, applying IT tools to gather data, writing algorithm for the application. Besides
+        that while working on questionnaires and articles the participants' skills in reading and listening comprehension, critical thinking, team work will be improved. Various techniques of team work, audio and video conferences will be held; short
+        films on nutritious meals will be made; lectures by dieticians, doctors, trainers; interviews with grandparents about their diet will be conducted as well as cookery workshops; chemical analysis of meals will be performed. Students will undergo
+        a cycle of fitness tests; they will participate in sport classes, a bike trip, beach volleyball tournament, Tai Chi and yoga classes led by professional instructors. All the initiative is complimentary with the school syllabuses.</p>
+      <p>Through promotion of lifestyle conducive to health, which is the focus of the project, all the participants' physical and emotional health will improve. Health-promoting habits and prevention of civilization diseases will be reinforced; the needs
+        and practical skills concerning sports activities and healthy eating will be developed. Thanks to communication with their peers the students will develop their language competence as well as personal and citizen traits. </p>
+      <p>Cooperating teachers will broaden their knowledge and experience connected with promotion of healthy lifestyle; practise their managerial and operating modern technologies skills; learn modern ways of promotion, new methods of teaching, improve
+        interrelation-related competences; enrich their knowledge of multicultural differences.</p>
+      <p>Through international cooperation, school exchange visits, steady online contact mobility among the participating schools will be developed. The schools will establish their reputation of institutions for which intellectual and psychophysical development
+        of the students is a priority. Their educational offer will be enriched by multicultural values.</p>
+      <p>The actions covered by the project will stimulate the participants to reflect on their lifestyle and lead to implementation health-promoting attitudes while, at the same time, will motivate to develop modern technologies competences. We claim that
+        in the future the outcomes of the project will serve further education of healthier and enlightened young people, which relates to the Euro 2020 strategy.</p>
+    </div>
+    </template><template id="profile"><div class="content"><h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2><div class="center"><div class="avatar center"><img src="https://unsplash.com/photos/6_I6NIKRCy4/download?force=true"></div></div><p class="center">imię i nazwisko</p><ul><li>Waga: 0KG</li><li>Wzrost: 0CM</li><li>BMI: 0</li></ul><div class="buttons"><div class="button"><span>Water</span></div><div class="button"><span>Snacks to school - survey</span></div></div></div></template>
+    <template
+      id="sport">
+      <div class="content">
+        <h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2>
+        <h3>Categories</h3>
+        <div class="buttons">
+          <div class="button" v-for="T in things">
+            <router-link :to="&quot;/&quot; + T[0]">{{ T[2].data().title }}</router-link>
+          </div>
+        </div>
+      </div>
+      </template><template id="food"><div class="content"><h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2><h3>Filters</h3><div class="buttons"><div class="button" v-for="T in things"><router-link :to="&quot;/&quot; + T[0]">{{ T[2].data().title }}</router-link></div></div></div></template>
+      <template
+        id="health">
+        <div class="content">
+          <h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2>
+          <div class="advice">rada 1</div>
+          <div class="advice">rada 2</div>
+          <p class="center">itd.</p>
+        </div>
+        </template><template id="like"><div class="content"><h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2><div class="buttons"><div class="button"><router-link to="/">VIDEOS</router-link></div><div class="button"><router-link to="/">ARTICLES</router-link></div></div></div></template>
+        <template
+          id="sport-sub">
+          <div class="content">
+            <h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2>
+            <div class="advice">ćw. 1</div>
+            <div class="advice">ćw. 2</div>
+            <p class="center">itd.</p>
+          </div>
+          </template><template id="food-sub"><div class="content"><h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2><div class="recipe">przepis 1</div><div class="recipe">przepis 2</div><p class="center">itd.</p></div></template>
+          <template
+            id="like-sub-artices">
+            <div class="content">
+              <h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2>
+              <div class="advice">art. 1</div>
+              <div class="advice">art. 2</div>
+              <p class="center">itd.</p>
+            </div>
+            </template><template id="like-sub-videos"><div class="content"><h2>{{title}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg></h2><div class="advice">vid. 1</div><div class="advice">vid. 2</div></div></template>
+            <div
+              id="app">
+              <router-view></router-view>
+              <div class="gray center" style="padding: 27px 0">Proundly created by the students of ILO Bialystok</div>
+              </div>
+              <script src="assets/js/app.processed.js"></script>
+</body>
+
+</html>
