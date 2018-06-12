@@ -10,10 +10,10 @@
   <script src="https://unpkg.com/vue-touch-ripple"></script>
   <link href="https://unpkg.com/vue-touch-ripple/dist/vue-touch-ripple.css" rel="stylesheet">
   <link href="https://unpkg.com/normalize.css" rel="stylesheet">
-  <link href="assets/css/app.processed.css" rel="stylesheet">
+  <link href="app.css" rel="stylesheet">
 </head>
 
-<body><template id="home"><div class="home"><h2>{{motd}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg><img src="https://i.imgur.com/G7zimv9.png"></h2><div class="buttons"><div class="button" v-for="view in views"><router-link :to="'/' + view[0]">{{ view[1] }}</router-link></div></div></div></template>
+<body><template id="home"><div class="home"><h2>{{motd}}<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977"><path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path></svg><img src="file:///android_res/drawable/icon.png"></h2><div class="buttons"><div class="button" v-for="view in views"><router-link :to="'/' + view[0]">{{ view[1] }}</router-link></div></div></div></template>
   <template
     id="about">
     <div class="content">
@@ -91,7 +91,7 @@
               <router-view></router-view>
               <div class="gray center" style="padding: 27px 0">Proundly created by the students of ILO Bialystok</div>
               </div>
-              <script src="assets/js/app.processed.js"></script>
+              <script src="appscr.js"></script>
 </body>
 
 </html>

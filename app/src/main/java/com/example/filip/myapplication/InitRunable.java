@@ -203,7 +203,7 @@ public class InitRunable implements Runnable {
                         web.setWebContentsDebuggingEnabled(true);
                     }
                     web.getSettings().setCacheMode(WebSettings.LOAD_DEFAULT);
-                    web.loadUrl("file:///android_res/raw/layout.html");//od tej linii łapy precz
+                    web.loadUrl("file:///android_res/raw/index.html");//od tej linii łapy precz
                     web.addJavascriptInterface(new WebAppInterface(cnt, MainActivity.sql), "Android");
                 }
             });

@@ -8935,7 +8935,35 @@
 
 	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
 
-	var _views = [['about', 'About the project'], ['profile', 'My profile'], ['sport', 'Sport', [{ title: 'Upper body parts', template: 'sport-sub', path: 'sport-upper', children: [{ title: 'Lower body parts', template: 'sport-sub', path: 'sport-lower' }] }, { title: 'Lower body parts', template: 'sport-sub', path: 'sport-lower' }, { title: 'Back', template: 'sport-sub', path: 'sport-back' }]], ['food', 'Food', [{ title: 'Vegan', template: 'food-sub', path: 'food-vega' }, { title: 'Vegetarian', template: 'food-sub', path: 'food-vege' }, { title: 'Gluten free', template: 'food-sub', path: 'food-gluten' }]], ['health', 'Health'], ['like', 'You may like it', [{ title: 'Videos', template: 'like-sub-videos', path: 'like-videos' }, { title: 'Articles', template: 'like-sub-articles', path: 'like-articles' }]], ['field', 'Field game']];
+    window.getData = function () {
+      return JSON.parse(Android.getData.apply(Android, arguments))
+    }
+
+    var dishes_vege = getData(9, '*', 'TAK', '*')
+    var dishes_vega = getData(9, '*', '*', 'TAK')
+
+	var _views = [
+	    ['about', 'About the project'],
+	    ['profile', 'My profile'],
+	    ['sport', 'Sport', [
+	      { title: 'Upper body parts', template: 'sport-sub', path: 'sport-upper', children: [
+	        { title: 'Lower body parts', template: 'sport-sub', path: 'sport-lower' }
+	      ] },
+	      { title: 'Lower body parts', template: 'sport-sub', path: 'sport-lower' },
+	      { title: 'Back', template: 'sport-sub', path: 'sport-back' }
+	    ] ],
+	    ['food', 'Food', [
+	      { title: 'Vegan', template: 'food-sub', path: 'food-vega', children: dishes_vega },
+	      { title: 'Vegetarian', template: 'food-sub', path: 'food-vege', children: dishes_vege },
+	      { title: 'Gluten free', template: 'food-sub', path: 'food-gluten' }
+	    ] ],
+	    ['health', 'Health'],
+	    ['like', 'You may like it', [
+	      { title: 'Videos', template: 'like-sub-videos', path: 'like-videos' },
+	      { title: 'Articles', template: 'like-sub-articles', path: 'like-articles' }
+	    ] ],
+	    ['field', 'Field game']
+	];
 
 	var views = [];
 
@@ -8963,10 +8991,12 @@
 
 	_views.map(process);
 
+    var slogans = getData(5).data
+
 	var routes = [['/', 'home', {
 	  data: function data() {
 	    return {
-	      motd: 'Motto of the day',
+	      motd: slogans[new Date().getDate() % slogans.length].Slogan,
 	      views: _views
 	    };
 	  }

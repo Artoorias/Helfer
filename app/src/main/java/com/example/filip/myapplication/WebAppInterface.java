@@ -7,9 +7,12 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Tomek on 08.02.2018.
@@ -106,7 +109,29 @@ class WebAppInterface implements jsInterface {
             utils.show_debug_message("get_Data", "req = " + req + " option1 = " + option_1);
             switch (req) {
                 case 9: //get_custom_filtred_dish
-                    c = sql.rawQuery("SELECT * from zywienie where przeciwskazania = ? and wegetarianizm = ? and weganizm = ?;", new String[]{option_1, option_2, option_3});
+                    String query ="SELECT * from zywienie ";
+                    List<String> arr = new ArrayList<String>();
+                    List<String> params = new ArrayList<String>();
+                    if (!option_1.equals("*")) {
+                        arr.add("przeciwskazania = ? ");
+                        params.add(option_1);
+                    }
+                    if (!option_2.equals("*")) {
+                        arr.add("wegetarianizm = ? ");
+                        params.add(option_2);
+                    }
+                    if (!option_3.equals("*")) {
+                        arr.add("weganizm = ? ");
+                        params.add(option_3);
+                    }
+
+                    if (arr.size() > 0) {
+                        query += "where ";
+                    }
+
+                    query += TextUtils.join(" and ", arr) + ';';
+
+                    c = sql.rawQuery(query, params.toArray(new String[0]));
                     break;
                 default:
                     return utils.returnError("Unknown request");
