@@ -8895,6 +8895,11 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+
+	window.back = function () {
+	    _router2.default.go(-1);
+	};
+
 	// App
 	var app = new Vue({
 	  router: _router2.default
@@ -8939,8 +8944,42 @@
       return JSON.parse(Android.getData.apply(Android, arguments))
     }
 
-    var dishes_vege = getData(9, '*', 'TAK', '*')
-    var dishes_vega = getData(9, '*', '*', 'TAK')
+    window.getResource = function () {
+      return JSON.parse(Android.getResources.apply(Android, arguments))
+    }
+
+	var views = [];
+
+	Array.prototype.wrap = function (tag) {
+	    return this.map(e => '<' + tag + '>' + e + '</' + tag + '>')
+	}
+
+	Array.prototype.ne = function () {
+	    return this.filter(e => e.trim() != '')
+	}
+
+    var prepare_dish = function (D) {
+        var res = getResource(1, D.id)
+        D.resource = res
+
+	    var route = ['/food-' + D.id, 'food-recipe', {
+	        data: function data() {
+	            return { title: D['Tytuł'], children: [
+	                '<h3>Ingredients</h3>',
+	                markdown.toHTML(D['Składniki']),
+	                '<h3>Recipe</h3>',
+	                markdown.toHTML(D.Instrukcja),
+	            ], resource: res };
+	        }
+	    }];
+	    views.push(route);
+
+        return D
+    }
+
+    var dishes_vege = getData(9, '*', 'TAK', '*').data.map(prepare_dish)
+    var dishes_vega = getData(9, '*', '*', 'TAK').data.map(prepare_dish)
+    var articles = getData(3).data
 
 	var _views = [
 	    ['about', 'About the project'],
@@ -8954,35 +8993,34 @@
 	    ] ],
 	    ['food', 'Food', [
 	      { title: 'Vegan', template: 'food-sub', path: 'food-vega', children: dishes_vega },
-	      { title: 'Vegetarian', template: 'food-sub', path: 'food-vege', children: dishes_vege },
-	      { title: 'Gluten free', template: 'food-sub', path: 'food-gluten' }
+	      { title: 'Vegetarian', template: 'food-sub', path: 'food-vege', children: dishes_vege }
 	    ] ],
-	    ['health', 'Health'],
-	    ['like', 'You may like it', [
-	      { title: 'Videos', template: 'like-sub-videos', path: 'like-videos' },
-	      { title: 'Articles', template: 'like-sub-articles', path: 'like-articles' }
-	    ] ],
+	    ['health', 'Health', articles ],
 	    ['field', 'Field game']
 	];
 
-	var views = [];
 
 	var process = function process(V) {
 	  if (Array.isArray(V)) {
-	    var things = (V[2] || []).map(process);
+	    var children = (V[2] || []).map(process);
 
 	    var _route = [V[0], V[0], {
 	      data: function data() {
-	        return { title: V[1], things: things };
+	        return { title: V[1], children: children };
 	      }
 	    }];
+
 	    views.push(_route);
 	    return _route;
 	  }
 
+	  if (!V.path) {
+	    return V
+	  }
+
 	  var route = [V.path, V.template, {
 	    data: function data() {
-	      return { title: V.title };
+	      return { title: V.title, children: V.children || [] };
 	    }
 	  }, (V.children || []).map(process)];
 	  views.push(route);

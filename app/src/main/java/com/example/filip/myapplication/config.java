@@ -9,7 +9,8 @@ final class config {
     final static public int WODA_1 = 0;
     final static public int WODA_2 = 1;
     final static public int KANAPKA = 2;
-    final static public int SHAKE_THRESHOLD = 20;
+    final static public int SHAKE_THRESHOLD_DEBUG = 20;
+    final static public int SHAKE_THRESHOLD = 5000;
     final static public String email = "helferbugtracker@protonmail.com";
     final static public String nazwa_w = "Pij wode";
     final static public String nazwa_k = "pamiętaj o kanapce na jutro";

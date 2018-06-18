@@ -18,6 +18,8 @@ import android.support.v4.app.NotificationCompat;
 import android.view.View;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -27,7 +29,7 @@ public class InitRunable implements Runnable {
     static Context cnt;
     private AlarmManager alarmMgr;
     private PendingIntent alarmIntent;
-
+    private int debug_button_id = 23342;
     @Override
     //initialize thread
     public void run() {
@@ -142,52 +144,70 @@ public class InitRunable implements Runnable {
                         AlarmManager.INTERVAL_DAY, alarmIntent);
             }
             //prepare notyfication button
-            ((Activity) cnt).findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    //for kommemts look to alarm reciver
-                    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        NotificationManager notificationManager =
-                                (NotificationManager) cnt.getSystemService(cnt.NOTIFICATION_SERVICE);
-                        NotificationCompat.Builder mBuilder =
-                                new NotificationCompat.Builder(cnt.getApplicationContext(), "woda")
-                                        .setSmallIcon(R.drawable.icon)
-                                        .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), R.drawable.woda_ico))
-                                        .setContentTitle("Pij wode")
-                                        .setPriority(NotificationManager.IMPORTANCE_MAX)
-                                        .setDefaults(Notification.DEFAULT_ALL)
-                                        .setContentText("Pij wode")
-                                        .setTicker("HELFER")
-                                        .setAutoCancel(true);
-                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        mBuilder.setSound(alarmSound);
-                        mBuilder.setLights(Color.BLUE, 500, 500);
-                        long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
-                        mBuilder.setVibrate(pattern);
-                        notificationManager.notify(0, mBuilder.build());
-                    } else {
-                        NotificationCompat.Builder mBuilder =
-                                new NotificationCompat.Builder(cnt.getApplicationContext())
-                                        .setSmallIcon(R.drawable.icon)
-                                        .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), R.drawable.woda_ico))
-                                        .setContentTitle("Pij wode")
-                                        .setPriority(Notification.PRIORITY_MAX)
-                                        .setDefaults(Notification.DEFAULT_ALL)
-                                        .setContentText("Pij wode")
-                                        .setTicker("HELFER")
-                                        .setWhen(0)
-                                        .setAutoCancel(true);
-                        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                        mBuilder.setSound(alarmSound);
-                        mBuilder.setLights(Color.BLUE, 500, 500);
-                        long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
-                        mBuilder.setVibrate(pattern);
-                        NotificationManager notificationManager =
-                                (NotificationManager) cnt.getSystemService(cnt.NOTIFICATION_SERVICE);
-                        notificationManager.notify(0, mBuilder.build());
-                    }
-                }
-            });
+            if (config.debug==true) {
+                 MainActivity.mhandler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                       LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
+                        params.weight = 90;
+                        ((WebView) ((Activity) cnt).findViewById(R.id.strona)).setLayoutParams(params);
+                        Button btn = new Button(cnt);
+                        btn.setId(debug_button_id);
+                        btn.setText("Pokarz powiadomienie");
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //for kommemts look to alarm reciver
+                                if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    NotificationManager notificationManager =
+                                            (NotificationManager) cnt.getSystemService(cnt.NOTIFICATION_SERVICE);
+                                    NotificationCompat.Builder mBuilder =
+                                            new NotificationCompat.Builder(cnt.getApplicationContext(), "woda")
+                                                    .setSmallIcon(R.drawable.icon)
+                                                    .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), R.drawable.woda_ico))
+                                                    .setContentTitle("Pij wode")
+                                                    .setPriority(NotificationManager.IMPORTANCE_MAX)
+                                                    .setDefaults(Notification.DEFAULT_ALL)
+                                                    .setContentText("Pij wode")
+                                                    .setTicker("HELFER")
+                                                    .setAutoCancel(true);
+                                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                    mBuilder.setSound(alarmSound);
+                                    mBuilder.setLights(Color.BLUE, 500, 500);
+                                    long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
+                                    mBuilder.setVibrate(pattern);
+                                    notificationManager.notify(0, mBuilder.build());
+                                } else {
+                                    NotificationCompat.Builder mBuilder =
+                                            new NotificationCompat.Builder(cnt.getApplicationContext())
+                                                    .setSmallIcon(R.drawable.icon)
+                                                    .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), R.drawable.woda_ico))
+                                                    .setContentTitle("Pij wode")
+                                                    .setPriority(Notification.PRIORITY_MAX)
+                                                    .setDefaults(Notification.DEFAULT_ALL)
+                                                    .setContentText("Pij wode")
+                                                    .setTicker("HELFER")
+                                                    .setWhen(0)
+                                                    .setAutoCancel(true);
+                                    Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+                                    mBuilder.setSound(alarmSound);
+                                    mBuilder.setLights(Color.BLUE, 500, 500);
+                                    long[] pattern = {500, 500, 500, 500, 500, 500, 500, 500, 500};
+                                    mBuilder.setVibrate(pattern);
+                                    NotificationManager notificationManager =
+                                            (NotificationManager) cnt.getSystemService(cnt.NOTIFICATION_SERVICE);
+                                    notificationManager.notify(0, mBuilder.build());
+                                }
+                            }
+                        });
+                        LinearLayout ll = (LinearLayout)((Activity) cnt).findViewById(R.id.linlay);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp.weight = 10;
+                        ll.addView(btn, lp);
+                    }});
+
+            }
             // web view initialize
             utils.show_debug_message("Thread", "inicjalizacja wyglądu");
             MainActivity.mhandler.post(new Runnable() {

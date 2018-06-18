@@ -24,6 +24,11 @@ h2 {
   margin: 0;
   padding: 27px;
   border-bottom: 27px solid #fff;
+  overflow: hidden;
+}
+
+h2.bg {
+  background: rgba(0, 0, 0, .3);
 }
 
 h2 svg {
@@ -31,7 +36,7 @@ h2 svg {
   display: block;
 }
 
-h2 img {
+h2 img:not(.title-bg) {
   display: block;
   position: absolute;
   bottom: -15vmin;
@@ -40,6 +45,15 @@ h2 img {
   width: 30vmin;
   height: 30vmin;
   filter: drop-shadow(0 0 27px #0af);
+}
+
+h2 img.title-bg {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 0;
+    width: 100%;
+    z-index: -1;
 }
 
 .buttons .button {
@@ -87,28 +101,35 @@ h3 {
 .recipe,
 .advice {
   position: relative;
-  padding: 0 0 27px 31%;
+  padding: 27px;
   margin: 7px 17px;
+  overflow: hidden;
+  border-radius: 7px;
+  background: rgba(0, 0, 0, 0.3);
 }
 
-.recipe::before,
-.advice::before {
-  position: absolute;
-  left: 0;
-  top: 0;
-  height: 100%;
-  width: 30%;
-  border: 2px solid #000;
-  content: '';
-  display: block;
-}
-
-.recipe::before {
-  top: 50%;
-  height: 0;
-  border-bottom: 2px dashed #000;
+.recipe a {
+    color: #fff;
+    text-decoration: none;
 }
 
 .gray {
   color: #666;
+}
+
+.food-recipe {
+  padding: 0 17px;
+}
+
+.recipe img {
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: -1;
+}
+
+ol > li {
+  padding: 7px 0;
 }

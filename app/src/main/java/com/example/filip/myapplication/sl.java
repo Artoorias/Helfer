@@ -54,7 +54,7 @@ public class sl implements SensorListener {
 
                     float speed = Math.abs(x + y + z - last_x - last_y - last_z) / diffTime * 10000;
 
-                    if (speed > config.SHAKE_THRESHOLD && !is_s) {
+                    if (((speed > config.SHAKE_THRESHOLD&&config.debug==false)||(speed > config.SHAKE_THRESHOLD_DEBUG&&config.debug==true)) && !is_s) {
                         utils.show_debug_message("sensor", "shake detected w/ speed: " + speed);
                         View view = ((Activity) cnt).getWindow().getDecorView();
                         view.setDrawingCacheEnabled(true);

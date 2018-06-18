@@ -17,6 +17,8 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.LinearLayout;
 
 import java.io.Serializable;
 
@@ -98,6 +100,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         try {
+
+
             setContentView(R.layout.activity_main);
             InitRunable.cnt = MainActivity.this;
             mhandler = new Handler();
