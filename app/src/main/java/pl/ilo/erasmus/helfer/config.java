@@ -5,7 +5,7 @@ package com.example.filip.myapplication;
  */
 
 final class config {
-    final static public boolean debug = true;
+    final static public boolean debug = false;
     final static public int WODA_1 = 0;
     final static public int WODA_2 = 1;
     final static public int KANAPKA = 2;
