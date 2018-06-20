@@ -1,4 +1,4 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import android.app.Activity;
 import android.content.Context;

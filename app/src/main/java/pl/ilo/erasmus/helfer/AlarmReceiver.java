@@ -1,4 +1,4 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -49,13 +49,13 @@ public class AlarmReceiver extends BroadcastReceiver {
             nazwa = config.nazwa_w;
             zawartosc = config.zawartosc_w;
             ticker = config.ticker_w;
-            li = BitmapFactory.decodeResource(context.getResources(), R.drawable.woda_ico);
+            li = BitmapFactory.decodeResource(context.getResources(), pl.ilo.erasmus.helfer.R.drawable.woda_ico);
             chan = "woda";
         } else {
             nazwa = config.nazwa_k;
             zawartosc = config.zawartosc_k;
             ticker = config.ticker_k;
-            li = BitmapFactory.decodeResource(context.getResources(), R.drawable.kanapka);
+            li = BitmapFactory.decodeResource(context.getResources(), pl.ilo.erasmus.helfer.R.drawable.kanapka);
             chan = "kanapka";
         }
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -63,7 +63,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                     (NotificationManager) context.getSystemService(context.NOTIFICATION_SERVICE);
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context, chan)
-                            .setSmallIcon(R.drawable.icon)
+                            .setSmallIcon(pl.ilo.erasmus.helfer.R.drawable.icon)
                             .setLargeIcon(li)
                             .setContentTitle(nazwa)
                             .setPriority(NotificationManager.IMPORTANCE_MAX)
@@ -80,7 +80,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         } else {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(context)
-                            .setSmallIcon(R.drawable.icon)
+                            .setSmallIcon(pl.ilo.erasmus.helfer.R.drawable.icon)
                             .setLargeIcon(li)
                             .setContentTitle(nazwa)
                             .setPriority(Notification.PRIORITY_MAX)

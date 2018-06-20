@@ -18,22 +18,22 @@ h2 {
   text-transform: uppercase;
   text-align: center;
   padding: 7px 17px;
-  border-bottom: 1px solid #fff;
   color: #fff;
   background: #0af;
   margin: 0;
   padding: 27px;
   border-bottom: 27px solid #fff;
-  overflow: hidden;
 }
 
 h2.bg {
   background: rgba(0, 0, 0, .3);
+  overflow: hidden;
 }
 
 h2 svg {
   margin: 27px -27px -28px;
   display: block;
+  width: calc(100% + 2 * 27px);
 }
 
 h2 img:not(.title-bg) {
@@ -42,6 +42,7 @@ h2 img:not(.title-bg) {
   bottom: -15vmin;
   left: 50%;
   transform: translateX(-50%);
+  -webkit-transform: translateX(-50%);
   width: 30vmin;
   height: 30vmin;
   filter: drop-shadow(0 0 27px #0af);
@@ -51,6 +52,7 @@ h2 img.title-bg {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
     left: 0;
     width: 100%;
     z-index: -1;
@@ -98,19 +100,35 @@ h3 {
   text-align: center;
 }
 
-.recipe,
-.advice {
+.recipe {
   position: relative;
-  padding: 27px;
   margin: 7px 17px;
   overflow: hidden;
   border-radius: 7px;
   background: rgba(0, 0, 0, 0.3);
 }
 
+.articles {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.article {
+    position: relative;
+    overflow: hidden;
+    border-radius: 7px;
+    width: calc(50% - 7px * 2);
+    margin: 7px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.article a,
 .recipe a {
     color: #fff;
     text-decoration: none;
+    padding: 27px;
+    display: block;
 }
 
 .gray {
@@ -121,12 +139,14 @@ h3 {
   padding: 0 17px;
 }
 
+.article img,
 .recipe img {
     position: absolute;
     width: 100%;
     top: 50%;
     left: 0;
     transform: translateY(-50%);
+    -webkit-transform: translateY(-50%);
     z-index: -1;
 }
 

@@ -1,4 +1,4 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 /**
  * Created by Tomek on 19.02.2018.

@@ -17,7 +17,7 @@
             <div class="home">
                 <h2>
                     {{motd}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                     <img src="file:///android_res/drawable/icon.png">
@@ -34,7 +34,7 @@
             <div class="content">
                 <h2>
                     {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                 </h2>
@@ -77,7 +77,7 @@
             <div class="content">
                 <h2>
                     {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                 </h2>
@@ -101,7 +101,7 @@
             <div class="content">
                 <h2>
                     {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                 </h2>
@@ -117,7 +117,7 @@
             <div class="content">
                 <h2>
                     {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                 </h2>
@@ -134,29 +134,14 @@
             <div class="content">
                 <h2>
                     {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                 </h2>
-                <div class="advice" v-for="A in children">
-                    <a :href='A.Link'>{{A['Tytuł']}}</a>
-                </div>
-            </div>
-        </template>
-        <template id="like">
-            <div class="content">
-                <h2>
-                    {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
-                        <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
-                    </svg>
-                </h2>
-                <div class="buttons">
-                    <div class="button">
-                        <router-link to="/like-videos">VIDEOS</router-link>
-                    </div>
-                    <div class="button">
-                        <router-link to="/like-articles">ARTICLES</router-link>
+                <div class="articles">
+                    <div class="article" v-for="A in children">
+                        <img v-if="A.resource.success" :src="'data:image/' + A.resource.data[0].typ + ';base64,' + A.resource.data[0].zawartosc">
+                        <a :href='A.Link'>{{A['Tytuł']}}</a>
                     </div>
                 </div>
             </div>
@@ -165,7 +150,7 @@
             <div class="content">
                 <h2>
                     {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                 </h2>
@@ -178,7 +163,7 @@
             <div class="content">
                 <h2>
                     {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff">
                         </path>
                     </svg>
@@ -194,35 +179,11 @@
                 <h2 :class="{ bg: resource.success }">
                     {{title}}
                     <img class="title-bg" v-if="resource.success" :src="'data:image/' + resource.data[0].typ + ';base64,' + resource.data[0].zawartosc">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
+                    <svg width="200.05" height="24.977" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
                         <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
                     </svg>
                 </h2>
                 <div class="food-recipe" v-for="R in children" v-html='R'></div>
-            </div>
-        </template>
-        <template
-                id="like-sub-articles">
-            <div class="content">
-                <h2>
-                    {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
-                        <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
-                    </svg>
-                </h2>
-            </div>
-        </template>
-        <template id="like-sub-videos">
-            <div class="content">
-                <h2>
-                    {{title}}
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200.05 24.977">
-                        <path d="M200.025 13.23c-76.414-44.117-130.617 40.058-200 0v11.747h200z" fill="#fff"></path>
-                    </svg>
-                </h2>
-                <a :href='A.Link' class="advice" v-for="A in children">
-                    {{A['Tytuł']}}
-                </a>
             </div>
         </template>
         <div id="app">

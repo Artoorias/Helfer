@@ -3,15 +3,16 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 26
     defaultConfig {
-        applicationId "com.example.filip.myapplication"
+        applicationId "pl.ilo.erasmus.helfer"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
-        versionName "0.1.0preaplha"
+        versionName "1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
         release {
+            debuggable false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }

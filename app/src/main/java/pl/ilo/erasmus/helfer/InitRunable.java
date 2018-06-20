@@ -1,4 +1,4 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import android.app.Activity;
 import android.app.AlarmManager;
@@ -151,7 +151,7 @@ public class InitRunable implements Runnable {
                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.MATCH_PARENT);
                         params.weight = 90;
-                        ((WebView) ((Activity) cnt).findViewById(R.id.strona)).setLayoutParams(params);
+                        ((WebView) ((Activity) cnt).findViewById(pl.ilo.erasmus.helfer.R.id.strona)).setLayoutParams(params);
                         Button btn = new Button(cnt);
                         btn.setId(debug_button_id);
                         btn.setText("Pokarz powiadomienie");
@@ -164,8 +164,8 @@ public class InitRunable implements Runnable {
                                             (NotificationManager) cnt.getSystemService(cnt.NOTIFICATION_SERVICE);
                                     NotificationCompat.Builder mBuilder =
                                             new NotificationCompat.Builder(cnt.getApplicationContext(), "woda")
-                                                    .setSmallIcon(R.drawable.icon)
-                                                    .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), R.drawable.woda_ico))
+                                                    .setSmallIcon(pl.ilo.erasmus.helfer.R.drawable.icon)
+                                                    .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), pl.ilo.erasmus.helfer.R.drawable.woda_ico))
                                                     .setContentTitle("Pij wode")
                                                     .setPriority(NotificationManager.IMPORTANCE_MAX)
                                                     .setDefaults(Notification.DEFAULT_ALL)
@@ -181,8 +181,8 @@ public class InitRunable implements Runnable {
                                 } else {
                                     NotificationCompat.Builder mBuilder =
                                             new NotificationCompat.Builder(cnt.getApplicationContext())
-                                                    .setSmallIcon(R.drawable.icon)
-                                                    .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), R.drawable.woda_ico))
+                                                    .setSmallIcon(pl.ilo.erasmus.helfer.R.drawable.icon)
+                                                    .setLargeIcon(BitmapFactory.decodeResource(cnt.getResources(), pl.ilo.erasmus.helfer.R.drawable.woda_ico))
                                                     .setContentTitle("Pij wode")
                                                     .setPriority(Notification.PRIORITY_MAX)
                                                     .setDefaults(Notification.DEFAULT_ALL)
@@ -201,7 +201,7 @@ public class InitRunable implements Runnable {
                                 }
                             }
                         });
-                        LinearLayout ll = (LinearLayout)((Activity) cnt).findViewById(R.id.linlay);
+                        LinearLayout ll = (LinearLayout)((Activity) cnt).findViewById(pl.ilo.erasmus.helfer.R.id.linlay);
                         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
                         lp.weight = 10;
                         ll.addView(btn, lp);
@@ -214,7 +214,7 @@ public class InitRunable implements Runnable {
                 @Override
                 public void run() {
                     MainActivity.dialog.setMessage("Inicjalizacja wyglądu...");
-                    WebView web = (WebView) ((Activity) cnt).findViewById(R.id.strona);
+                    WebView web = (WebView) ((Activity) cnt).findViewById(pl.ilo.erasmus.helfer.R.id.strona);
                     web.getSettings().setJavaScriptEnabled(true);
                     web.getSettings().setAllowFileAccess(true);
                     web.getSettings().setAllowContentAccess(true);

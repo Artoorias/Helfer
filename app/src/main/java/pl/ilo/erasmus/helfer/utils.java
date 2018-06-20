@@ -1,4 +1,4 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -121,6 +121,7 @@ public class utils {
     static void show_debug_message(String tag, String msg) {
         logcat += tag + ": " + msg + String.valueOf((char) 13) + String.valueOf((char) 10);
         if (config.debug == true) {
+
             Log.d(tag, msg);
         }
     }
@@ -131,10 +132,10 @@ public class utils {
             sharedPref = cnt.getSharedPreferences(PREFERENCES_NAME, Activity.MODE_PRIVATE);
             editor = sharedPref.edit();
             show_debug_message("check_db_updates", "Rozpoczynam");
-            String path = "/data/data/com.example.filip.myapplication/databases";
+            String path = "/data/data/pl.ilo.erasmus.helfer/databases";
             String DATABASE_NAME = "database";
-            String DATABASE_PATH = "/data/data/com.example.filip.myapplication/databases/";
-            InputStream in = cnt.getResources().openRawResource(R.raw.baza);
+            String DATABASE_PATH = "/data/data/pl.ilo.erasmus.helfer/databases/";
+            InputStream in = cnt.getResources().openRawResource(pl.ilo.erasmus.helfer.R.raw.baza);
             OutputStream out = null;
             try {
                 MainActivity.mhandler.post(new Runnable() {
@@ -210,7 +211,7 @@ public class utils {
                 try {
                     //we need to copy
                     out = new FileOutputStream(DATABASE_PATH + DATABASE_NAME + ".bak");
-                    in = cnt.getResources().openRawResource(R.raw.baza);
+                    in = cnt.getResources().openRawResource(pl.ilo.erasmus.helfer.R.raw.baza);
                     byte[] buff = new byte[1024];
                     int read = 0;
                     while ((read = in.read(buff)) > 0) {

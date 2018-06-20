@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.AppCompat"
-    tools:context="com.example.filip.myapplication.Main3Activity">
+    tools:context="pl.ilo.erasmus.helfer.Main3Activity">
 
     <Button
         android:id="@+id/button3"

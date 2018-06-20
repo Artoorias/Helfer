@@ -8951,11 +8951,18 @@
 	var views = [];
 
 	Array.prototype.wrap = function (tag) {
-	    return this.map(e => '<' + tag + '>' + e + '</' + tag + '>')
+	    return this.map(function (e) { return '<' + tag + '>' + e + '</' + tag + '>' })
 	}
 
 	Array.prototype.ne = function () {
-	    return this.filter(e => e.trim() != '')
+	    return this.filter(function (e) { return e.trim() != '' })
+	}
+
+	var prepare_article = function (A) {
+	    var res = getResource(0, A.id)
+	    A.resource = res
+
+	    return A
 	}
 
     var prepare_dish = function (D) {
@@ -8979,7 +8986,7 @@
 
     var dishes_vege = getData(9, '*', 'TAK', '*').data.map(prepare_dish)
     var dishes_vega = getData(9, '*', '*', 'TAK').data.map(prepare_dish)
-    var articles = getData(3).data
+    var articles = getData(3).data.map(prepare_article)
 
 	var _views = [
 	    ['about', 'About the project'],

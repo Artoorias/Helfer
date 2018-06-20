@@ -1,4 +1,4 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import android.content.ClipData;
 import android.content.ClipboardManager;
@@ -21,18 +21,18 @@ public class Main3Activity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main3);
+        setContentView(pl.ilo.erasmus.helfer.R.layout.activity_main3);
         getSupportActionBar().setTitle("Helfer Error reciver");
         Exception e = (Exception) getIntent().getExtras().getSerializable("exception");
         msg = Arrays.toString(e.getStackTrace());
         msg += " msg = " + e.getMessage();
         addmsg = getIntent().getExtras().getString("add_info");
-        ((TextView) findViewById(R.id.textView4)).setText(e.getMessage());
+        ((TextView) findViewById(pl.ilo.erasmus.helfer.R.id.textView4)).setText(e.getMessage());
         if (addmsg.equals("")) {
             addmsg = "brak dodatkowych informacji";
         }
-        ((TextView) findViewById(R.id.textView5)).setText(addmsg);
-        findViewById(R.id.button2).setOnClickListener(new View.OnClickListener() {
+        ((TextView) findViewById(pl.ilo.erasmus.helfer.R.id.textView5)).setText(addmsg);
+        findViewById(pl.ilo.erasmus.helfer.R.id.button2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = getBaseContext().getPackageManager()
@@ -42,7 +42,7 @@ public class Main3Activity extends AppCompatActivity {
                 Runtime.getRuntime().exit(0);
             }
         });
-        findViewById(R.id.button4).setOnClickListener(new View.OnClickListener() {
+        findViewById(pl.ilo.erasmus.helfer.R.id.button4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main3Activity.this);
@@ -67,7 +67,7 @@ public class Main3Activity extends AppCompatActivity {
                 alertDialog.show();
             }
         });
-        findViewById(R.id.button3).setOnClickListener(new View.OnClickListener() {
+        findViewById(pl.ilo.erasmus.helfer.R.id.button3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder alertDialog = new AlertDialog.Builder(Main3Activity.this);

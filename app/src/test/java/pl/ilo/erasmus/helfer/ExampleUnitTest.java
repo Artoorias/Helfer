@@ -1,4 +1,4 @@
-package pl.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import org.junit.Test;
 

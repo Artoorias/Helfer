@@ -1,4 +1,4 @@
-package pl.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;

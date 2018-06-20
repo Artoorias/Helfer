@@ -1,6 +1,5 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -17,8 +16,6 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.LinearLayout;
 
 import java.io.Serializable;
 
@@ -90,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         if (Integer.parseInt(android.os.Build.VERSION.SDK) > 5
                 && keyCode == KeyEvent.KEYCODE_BACK
                 && event.getRepeatCount() == 0) {
-            WebView web = (WebView) findViewById(R.id.strona);
+            WebView web = (WebView) findViewById(pl.ilo.erasmus.helfer.R.id.strona);
             web.loadUrl("javascript:window.back();");
             return true;
         }
@@ -102,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
         try {
 
 
-            setContentView(R.layout.activity_main);
+            setContentView(pl.ilo.erasmus.helfer.R.layout.activity_main);
             InitRunable.cnt = MainActivity.this;
             mhandler = new Handler();
             getSupportActionBar().hide();

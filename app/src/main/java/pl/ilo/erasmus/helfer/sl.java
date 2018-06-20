@@ -1,4 +1,4 @@
-package com.example.filip.myapplication;
+package pl.ilo.erasmus.helfer;
 
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -41,7 +41,7 @@ public class sl implements SensorListener {
     public void onSensorChanged(int sensor, float[] values) {
         cn = am.getRunningTasks(1).get(0).topActivity;
         //work only for my window
-        if ("com.example.filip.myapplication.MainActivity".equals(cn.getClassName())) {
+        if ("pl.ilo.erasmus.helfer.MainActivity".equals(cn.getClassName())) {
             if (sensor == SensorManager.SENSOR_ACCELEROMETER) {
                 long curTime = System.currentTimeMillis();
                 if ((curTime - lastUpdate) > 100) {
