@@ -39,7 +39,7 @@ public class InitRunable implements Runnable {
             MainActivity.dialog.setProgressStyle(MainActivity.dialog.STYLE_SPINNER);
             MainActivity.dialog.setMessage("Inicjalizacja...");
             MainActivity.dialog.setIndeterminate(true);
-            MainActivity.dialog.setCanceledOnTouchOutside(false);
+            MainActivity.dialog.setCanceledOnTouchOutside(false) ;
             MainActivity.dialog.setCancelable(false);
             MainActivity.mhandler.post(new Runnable() {
                 @Override
