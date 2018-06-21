@@ -28,6 +28,10 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class utils {
     private final static String PREFERENCES_NAME = "conf";
@@ -36,10 +40,23 @@ public class utils {
     static String logcat = "";
     private static SharedPreferences sharedPref;
     private static SharedPreferences.Editor editor;
-
+    public static JSONArray convertToJSON(ResultSet resultSet)
+            throws Exception {
+        JSONArray jsonArray = new JSONArray();
+        while (resultSet.next()) {
+            int total_rows = resultSet.getMetaData().getColumnCount();
+            for (int i = 0; i < total_rows; i++) {
+                JSONObject obj = new JSONObject();
+                obj.put(resultSet.getMetaData().getColumnLabel(i + 1)
+                        .toLowerCase(), resultSet.getObject(i + 1));
+                jsonArray.put(obj);
+            }
+        }
+        return jsonArray;
+    }
     @NonNull
     //function call if update detected
-    public static boolean dbupate(@NonNull SQLiteDatabase target, @NonNull SQLiteDatabase source) throws Exception {
+    public static boolean dbupate(@NonNull Connection target, @NonNull Connection source) throws Exception {
         //TODO
         return true;
     }
@@ -176,8 +193,10 @@ public class utils {
             show_debug_message("check_db_updates", "Sprawdzam czy baza działa");
             try {
                 //check working of database
-                MainActivity.sql = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME, null, SQLiteDatabase.OPEN_READWRITE);
-                Cursor c = MainActivity.sql.rawQuery("SELECT * from artykoly;", null);
+                String url = "jdbc:sqlite:"+(DATABASE_PATH + DATABASE_NAME);
+                // create a connection to the database
+                MainActivity.sql =  DriverManager.getConnection(url);
+                MainActivity.sql.prepareStatement("SELECT * from artykoly;").execute();
             } catch (Exception e) {
                 show_debug_message("check_db_updates", "Baza ni działa");
                 MainActivity.em = "Baza ni działa";
@@ -192,10 +211,12 @@ public class utils {
                 }
             });
             Thread.sleep(1000);
-            Cursor db_ver = MainActivity.sql.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";", null);
-            Cursor apk_ver = MainActivity.sql.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";", null);
-            apk_ver.moveToFirst();
-            db_ver.moveToFirst();
+            ResultSet db_ver = MainActivity.sql.prepareStatement("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";").executeQuery();
+            ResultSet apk_ver = MainActivity.sql.prepareStatement("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";").executeQuery();
+            apk_ver.beforeFirst();
+            apk_ver.next();
+            db_ver.beforeFirst();
+            db_ver.next();
             String versja = apk_ver.getString(0);
             //check from shared settings apkvbersion
             if (sharedPref.getString(APK_VERSION_KEY, "").equals("")) {
@@ -229,19 +250,21 @@ public class utils {
                     throw e;
                 }
                 //get version
-                SQLiteDatabase sqtmp = SQLiteDatabase.openDatabase(DATABASE_PATH + DATABASE_NAME + ".bak", null, SQLiteDatabase.OPEN_READWRITE);
-                db_ver = sqtmp.rawQuery("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";", null);
-                db_ver.moveToFirst();
+                Connection sqtmp = DriverManager.getConnection("jdbc:sqlite:"+(DATABASE_PATH + DATABASE_NAME+ ".bak"));
+                db_ver = sqtmp.prepareStatement("Select wartosc from _conf where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";").executeQuery();
+                db_ver.beforeFirst();
+                db_ver.next();
                 String wer = db_ver.getString(0);
-                final Cursor tmp = MainActivity.sql.rawQuery("Select wartosc from _conf;", null);
-                tmp.moveToFirst();
+                final ResultSet tmp = MainActivity.sql.prepareStatement("Select wartosc from _conf;").executeQuery();
+                tmp.beforeFirst();
+                tmp.next();
                 if (!wer.equals(tmp.getString(0))) {
                     show_debug_message("check_db_updates", "versja bazy danych nie jest aktualne (był update)");
                     if (!utils.dbupate(MainActivity.sql, sqtmp)) {//do updates
                         MainActivity.em = "Brak dodatkowych informacji";
                         throw new Exception("błąd w trakcie aktualizacji bazy danych");
                     }
-                    MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + wer + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";");
+                    MainActivity.sql.prepareStatement("Update _conf set wartosc = " + String.valueOf((char) 34) + wer + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_db" + String.valueOf((char) 34) + ";").execute();
                     editor.putString(DB_VERSION_KEY, wer);
                 } else {
                     show_debug_message("check_db_updates", "versja bazy danych jest aktualna");
@@ -254,13 +277,13 @@ public class utils {
             //check from database
             if (versja.equals("-1")) {
                 show_debug_message("check_db_updates", "versja aplikacji nie zapisana w db (pierwsze uruchomienie)");
-                MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
+                MainActivity.sql.prepareStatement("Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";").execute();
             } else if (versja.equals(MainActivity.pinfo.versionName)) {
                 show_debug_message("check_db_updates", "versja aplikacji w db aktualna");
             } else {
                 show_debug_message("check_db_updates", "versja aplikacji w db nie aktualna (był update)");
                 Log.d("sql", "Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
-                MainActivity.sql.execSQL("Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";");
+                MainActivity.sql.prepareStatement("Update _conf set wartosc = " + String.valueOf((char) 34) + MainActivity.pinfo.versionName + String.valueOf((char) 34) + " where klucz = " + String.valueOf((char) 34) + "wersja_apk" + String.valueOf((char) 34) + ";").execute();
             }
             //update if db updated
             versja = db_ver.getString(0);
@@ -291,12 +314,17 @@ public class utils {
             }
             show_debug_message("check_db_updates", "aktualnie zainstalowana wersja db " + versja);
             if (config.debug == true) {
-                final Cursor tmp = MainActivity.sql.rawQuery("Select wartosc from _conf;", null);
-                tmp.moveToFirst();
+                final ResultSet tmp = MainActivity.sql.prepareStatement("Select wartosc from _conf;").executeQuery();
+                tmp.beforeFirst();
+                tmp.next();
                 MainActivity.mhandler.post(new Runnable() {
                     @Override
                     public void run() {
-                        Toast.makeText(cnt, "Witam w wersji DEBUG, ta wersja nie jest przezbaczona do urzytku pordukcyjnego, wersj: " + MainActivity.pinfo.versionName + " wersja bazy danych to: " + tmp.getString(0) + " miłego debugu", Toast.LENGTH_LONG).show();
+                        try {
+                            Toast.makeText(cnt, "Witam w wersji DEBUG, ta wersja nie jest przezbaczona do urzytku pordukcyjnego, wersj: " + MainActivity.pinfo.versionName + " wersja bazy danych to: " + tmp.getString(0) + " miłego debugu", Toast.LENGTH_LONG).show();
+                        } catch (SQLException e) {
+                            e.printStackTrace();
+                        }
                     }
                 });
             }

@@ -18,9 +18,13 @@ import android.view.View;
 import android.webkit.WebView;
 
 import java.io.Serializable;
+import java.sql.Connection;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 
 public class MainActivity extends AppCompatActivity {
-    static SQLiteDatabase sql = null;
+    static Connection sql = null;
     static PackageInfo pinfo;
     static ProgressDialog dialog;
     static Handler mhandler;
@@ -35,17 +39,21 @@ public class MainActivity extends AppCompatActivity {
             Log.d("end", "Kończenie");
         }
         if (sql != null) {
-            if (sql.isOpen()) {
-                try {
-                    if (config.debug == true) {
-                        Log.d("end", "czyszczenie");
-                    }
-                    sql.execSQL("VACUUM;");
-                } catch (Exception e) {
-                    if (config.debug == true) {
-                        Log.d("end", "błąd czyszczenia " + e.getMessage());
+            try {
+                if (!sql.isClosed()) {
+                    try {
+                        if (config.debug == true) {
+                            Log.d("end", "czyszczenie");
+                        }
+                        sql.prepareStatement("VACUUM;").execute();
+                    } catch (Exception e) {
+                        if (config.debug == true) {
+                            Log.d("end", "błąd czyszczenia " + e.getMessage());
+                        }
                     }
                 }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } else {
             if (config.debug == true) {
@@ -69,8 +77,12 @@ public class MainActivity extends AppCompatActivity {
         }
         //if db open close
         if (sql != null) {
-            if (sql.isOpen()) {
-                sql.close();
+            try {
+                if (!sql.isClosed()) {
+                    sql.close();
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         } else {
             if (config.debug == true) {
@@ -98,11 +110,11 @@ public class MainActivity extends AppCompatActivity {
         boolean abc =BuildConfig.DEBUG;
         super.onCreate(savedInstanceState);
         try {
-
-
+            Class.forName("org.sqlite.JDBC");
             setContentView(pl.ilo.erasmus.helfer.R.layout.activity_main);
             InitRunable.cnt = MainActivity.this;
             mhandler = new Handler();
+
             getSupportActionBar().hide();
             dialog = new ProgressDialog(MainActivity.this);
             utils.show_debug_message("create", "Rozpoczynam");

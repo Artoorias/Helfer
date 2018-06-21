@@ -22,13 +22,13 @@ interface jsInterface {
      * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
      */
     @JavascriptInterface
-    public String getData(@NonNull int req);
+    public String getData(@NonNull int req) throws Exception;
 
     @JavascriptInterface
-    public String getData(@NonNull int req, @NonNull String option_1);
+    public String getData(@NonNull int req, @NonNull String option_1) throws Exception;
 
     @JavascriptInterface
-    public String getData(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3);
+    public String getData(@NonNull int req, @NonNull String option_1, @NonNull String option_2, @NonNull String option_3) throws Exception;
 
     /**
      * Add new ro to _Ankieta table
@@ -58,7 +58,7 @@ interface jsInterface {
      * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
      */
     @JavascriptInterface
-    public String getSurveyInfoById(@NonNull Integer id);
+    public String getSurveyInfoById(@NonNull Integer id) throws Exception;
 
     /**
      * Get all rows form table _Ankieta by id
@@ -66,7 +66,7 @@ interface jsInterface {
      * @return String {status: Json operation status, (error:error mesage), (data:database return converted to json)}
      */
     @JavascriptInterface
-    public String getSurveyInfoAll();
+    public String getSurveyInfoAll() throws Exception;
 
     /**
      * Clear and optymalize database
@@ -82,7 +82,7 @@ interface jsInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public String profileGetData();
+    public String profileGetData() throws Exception;
 
     /**
      * get lastest profile data
@@ -90,7 +90,7 @@ interface jsInterface {
      * @return String Json operation status (witch error)
      */
     @JavascriptInterface
-    public String profileGetLastestData();
+    public String profileGetLastestData() throws Exception;
 
     /**
      * update lastest profile data
