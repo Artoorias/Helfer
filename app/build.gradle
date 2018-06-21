@@ -5,6 +5,7 @@ android {
         config {
          }
     }
+
     compileSdkVersion 27
     defaultConfig {
         applicationId "pl.ilo.erasmus.helfer"
