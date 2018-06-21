@@ -188,7 +188,7 @@ public class InitRunable implements Runnable {
                                                     .setDefaults(Notification.DEFAULT_ALL)
                                                     .setContentText("Pij wode")
                                                     .setTicker("HELFER")
-                                                    .setWhen(0) 
+                                                    .setWhen(0)
                                                     .setAutoCancel(true);
                                     Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
                                     mBuilder.setSound(alarmSound);
