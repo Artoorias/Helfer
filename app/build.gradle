@@ -11,8 +11,8 @@ android {
         applicationId "pl.ilo.erasmus.helfer"
         minSdkVersion 15
         targetSdkVersion 27
-        versionCode 1
-        versionName "1"
+        versionCode 3
+        versionName "0.1.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {

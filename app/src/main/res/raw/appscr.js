@@ -8966,6 +8966,7 @@
 	}
 
     var prepare_dish = function (D) {
+    console.log(D.id);
         var res = getResource(1, D.id)
         D.resource = res
 

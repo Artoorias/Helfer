@@ -324,13 +324,23 @@ class WebAppInterface implements jsInterface {
             utils.show_debug_message("get_resources", "błąd: " + e.getMessage());
             return utils.returnError(e.getMessage());
         }
-        if (c.getCount() == 0) {
-            return utils.returnError("Resource not found");
-        } else {
-            utils.show_debug_message("get_resources", "ok");
-            return utils.returnData(utils.cursorToString(c));
-        }
 
+        try {
+            if (c != null) {
+                if (c.getCount() == 0) {
+                    return utils.returnError("Resource not found");
+                } else {
+                    utils.show_debug_message("get_resources", "ok");
+                    return utils.returnData(utils.cursorToString(c));
+                }
+            } else {
+                return utils.returnError("Resource not found");
+
+            }
+        }catch (Exception e){
+             utils.show_debug_message("get_resources", "błąd: " + e.getMessage());
+            return utils.returnError(e.getMessage());
+        }
     }
 
     //show error page, prepair to send notice to developer and stop application
