@@ -3,15 +3,11 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-<<<<<<< HEAD
-         }
-=======
             keyAlias '##'
             keyPassword '##'
             storeFile file('##')
             storePassword '##'
         }
->>>>>>> done
     }
 
     compileSdkVersion 27
