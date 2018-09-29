@@ -3,10 +3,10 @@ apply plugin: 'com.android.application'
 android {
     signingConfigs {
         config {
-            keyAlias 'key'
-            keyPassword 'Spg4hn39!'
-            storeFile file('D:/pobrane/abc.keystore')
-            storePassword 'Spg4hn39!'
+            keyAlias '##'
+            keyPassword '##'
+            storeFile file('##')
+            storePassword ##!'
         }
     }
 
